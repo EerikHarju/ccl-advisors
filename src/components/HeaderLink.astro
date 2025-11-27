@@ -1,5 +1,6 @@
 ---
-// HeaderLink.astro
+// HeaderLink.astro - simple styled link for header navigation
+
 import type { HTMLAttributes } from 'astro/types';
 
 type Props = HTMLAttributes<'a'>;
@@ -10,26 +11,25 @@ const subpath = pathname.match(/[^\/]+/g);
 const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 ---
 
-<a href={href} class:list={[className, { active: isActive }]} {...props}>
+<a href={href} class:list={[className, { active: isActive }]} {...props} role="link">
   <slot />
 </a>
 
 <style>
   a {
-    display: inline-block;
-    text-decoration: none;
     font-weight: 600;
     color: #2337ff;
-    padding: 0.5rem 0.25rem;
+    padding: 0.25rem 0.25rem;
     border-bottom: 3px solid transparent;
-    transition: border-color 0.3s ease, color 0.3s ease;
+    text-decoration: none;
+    transition: border-color 0.25s ease, color 0.25s ease;
+  }
+  a:hover {
+    color: #1a1a1a;
   }
   a.active {
     border-bottom-color: #2337ff;
     color: #1a1a1a;
     font-weight: 700;
-  }
-  a:hover {
-    color: #1a1a1a;
   }
 </style>
