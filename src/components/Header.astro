@@ -1,9 +1,7 @@
 ---
-// src/components/Header.astro
 import HeaderLink from './HeaderLink.astro';
 import { Astro } from 'astro';
 
-// Inline translations - no extra files needed
 const translations = {
   en: {
     home: 'Home',
@@ -33,12 +31,10 @@ const translations = {
   }
 };
 
-// Detect current language
 const lang = Astro.url.pathname.startsWith('/fi') ? 'fi' : 'en';
 const toggleLang = lang === 'en' ? 'fi' : 'en';
 const togglePath = Astro.url.pathname.replace(`/${lang}`, `/${toggleLang}`);
 
-// Services array
 const services = [
   { labelKey: 'serviceItems.transactions', href: '/services/transactions' },
   { labelKey: 'serviceItems.commercial', href: '/services/commercial-contracts' },
@@ -46,64 +42,79 @@ const services = [
   { labelKey: 'serviceItems.legalops', href: '/services/legal-operations' },
 ];
 
-// Translation helper
 function t(key: string): string {
   const keys = key.split('.');
   let result: any = translations[lang];
   for (const k of keys) {
     result = result?.[k];
     if (result === undefined) {
-      return key;  // fallback to showing the key text itself
+      return key;
     }
   }
   return result;
 }
-
 ---
 
 <header class="header">
   <nav class="nav" aria-label="Primary navigation">
-    <!-- Left: Logo -->
+    <!-- Logo FLUSH LEFT -->
     <a href={`/${lang}/`} class="logo" aria-label="CCL Advisory Oy Home">
-      <img
-        src="/media/HG Logo 1 1600x600 icon.png"
-        alt="CCL Advisory logo"
-        class="logo-img"
-      />
+      <img src="/media/HG Logo 1 1600x600 icon.png" alt="CCL Advisory logo" class="logo-img" />
     </a>
 
-    <!-- Center: Navigation -->
-    <ul class="nav-list">
+    <!-- Desktop nav CENTERED -->
+    <ul class="nav-list desktop-only">
       <li><HeaderLink href={`/${lang}/`}>{t('home')}</HeaderLink></li>
       <li><HeaderLink href={`/${lang}/about`}>{t('about')}</HeaderLink></li>
-
       <li class="nav-item dropdown">
-        <button class="dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
-          {t('services')}
-        </button>
+        <!-- Services is now clickable LINK + dropdown toggle -->
+        <HeaderLink href={`/${lang}/services`} class="services-link">
+          <span class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+            {t('services')}
+          </span>
+        </HeaderLink>
         <ul class="dropdown-menu">
           {services.map((service) => (
-            <li>
-              <HeaderLink href={`/${lang}${service.href}`}>{t(service.labelKey)}</HeaderLink>
-            </li>
+            <li><HeaderLink href={`/${lang}${service.href}`}>{t(service.labelKey)}</HeaderLink></li>
           ))}
         </ul>
       </li>
-
       <li><HeaderLink href={`/${lang}/references`}>{t('references')}</HeaderLink></li>
       <li><HeaderLink href={`/${lang}/contact`}>{t('contact')}</HeaderLink></li>
     </ul>
 
-    <!-- Right: Language toggle -->
-    <button
-      class="lang-toggle"
-      type="button"
-      onclick={`window.location.href='${togglePath}'`}
-      aria-label={lang === 'en' ? 'Switch to Finnish' : 'Vaihda kieli englanniksi'}
-    >
-      {toggleLang.toUpperCase()}
-    </button>
+    <!-- Right side -->
+    <div class="nav-right">
+      <button class="lang-toggle desktop-only" type="button" onclick={`window.location.href='${togglePath}'`}
+              aria-label={lang === 'en' ? 'Switch to Finnish' : 'Vaihda kieli englanniksi'}>
+        {toggleLang.toUpperCase()}
+      </button>
+      <button class="mobile-menu-btn mobile-only" type="button" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
+
+  <!-- Mobile-only elements -->
+  <div class="overlay mobile-only" id="overlay"></div>
+  <aside class="sidebar mobile-only" id="sidebar">
+    <nav class="sidebar-nav">
+      <HeaderLink href={`/${lang}/`}>{t('home')}</HeaderLink>
+      <HeaderLink href={`/${lang}/about`}>{t('about')}</HeaderLink>
+      <HeaderLink href={`/${lang}/services`}>{t('services')}</HeaderLink>
+      <div class="sidebar-services-list">
+        {services.map((service) => (
+          <HeaderLink href={`/${lang}${service.href}`}>{t(service.labelKey)}</HeaderLink>
+        ))}
+      </div>
+      <HeaderLink href={`/${lang}/references`}>{t('references')}</HeaderLink>
+      <HeaderLink href={`/${lang}/contact`}>{t('contact')}</HeaderLink>
+      <button class="lang-toggle-mobile" type="button" onclick={`window.location.href='${togglePath}'`}
+              aria-label={lang === 'en' ? 'Switch to Finnish' : 'Vaihda kieli englanniksi'}>
+        {toggleLang.toUpperCase()}
+      </button>
+    </nav>
+  </aside>
 </header>
 
 <style>
@@ -111,32 +122,44 @@ function t(key: string): string {
     --color-text: #111111;
     --color-hover: #b67b3f;
     --color-bg: #ffffff;
+    --spacing: clamp(1rem, 4vw, 2rem);
+    --spacing-lg: clamp(2rem, 6vw, 4rem);
+    --font-nav: clamp(0.85rem, 2vw, 0.95rem);
   }
 
   .header {
     background: var(--color-bg);
     border-bottom: 1px solid #e5e5e5;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    position: relative;
+    z-index: 10;
   }
 
+  /* Visibility utilities */
+  .desktop-only { display: block; }
+  .mobile-only { display: none; }
+
   .nav {
-    max-width: 1200px;
+    max-width: clamp(1000px, 90vw, 1400px);
     margin: 0 auto;
-    padding: 1.25rem 2rem;
+    padding: var(--spacing) 0;
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
+    gap: var(--spacing-lg);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-    gap: 2rem;
   }
 
   .logo {
     display: flex;
     align-items: center;
     text-decoration: none;
+    justify-self: start;
   }
 
   .logo-img {
-    height: 40px;
+    height: clamp(32px, 6vw, 40px);
     width: auto;
     display: block;
   }
@@ -144,21 +167,34 @@ function t(key: string): string {
   .nav-list {
     list-style: none;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 2.5rem;
+    gap: var(--spacing-lg);
     margin: 0;
     padding: 0;
-    width: 100%;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-self: end;
   }
 
   .nav-item {
     position: relative;
   }
 
+  /* Services link styling - acts as both link AND hover trigger */
+  .services-link {
+    display: contents; /* Makes HeaderLink transparent wrapper */
+  }
+
   .nav-list a,
-  .dropdown-toggle {
-    font-size: 0.95rem;
+  .dropdown-toggle,
+  .lang-toggle {
+    font-size: var(--font-nav);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     font-weight: 500;
@@ -169,10 +205,12 @@ function t(key: string): string {
     cursor: pointer;
     text-decoration: none;
     transition: color 160ms ease-out;
+    white-space: nowrap;
   }
 
   .nav-list a:hover,
-  .dropdown-toggle:hover {
+  .dropdown-toggle:hover,
+  .lang-toggle:hover {
     color: var(--color-hover);
   }
 
@@ -234,37 +272,179 @@ function t(key: string): string {
   }
 
   .lang-toggle {
-    border: none;
-    background: none;
-    font-size: 0.9rem;
+    font-size: var(--font-nav);
     letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 500;
+  }
+
+  .mobile-menu-btn {
+    background: none;
+    border: none;
     cursor: pointer;
-    color: var(--color-text);
-    padding: 0;
-    transition: color 160ms ease-out;
+    padding: 0.5rem;
   }
 
-  .lang-toggle:hover {
-    color: var(--color-hover);
+  .mobile-menu-btn span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: var(--color-text);
+    margin: 5px 0;
+    border-radius: 2px;
+    transition: all 0.3s ease;
   }
 
-  @media (max-width: 768px) {
+  /* MOBILE ≤1024px */
+  @media (max-width: 1024px) {
+    .desktop-only { display: none !important; }
+    .mobile-only { display: block; }
+
     .nav {
-      grid-template-columns: 1fr;
-      gap: 1rem;
-      text-align: center;
+      grid-template-columns: auto 1fr auto;
+      gap: var(--spacing);
     }
-    
-    .nav-list {
-      gap: 1.5rem;
-      order: -1;
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      background: var(--color-bg);
+      box-shadow: 3px 0 15px rgba(0, 0, 0, 0.3);
+      width: max-content;
+      max-width: 80vw;
+      overflow-y: auto;
+      padding: var(--spacing-lg) var(--spacing);
+      box-sizing: border-box;
+      transform: translateX(-110%);
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 1001;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
     }
-    
-    .logo,
-    .lang-toggle {
-      justify-self: center;
+
+    .sidebar.active {
+      transform: translateX(0);
+    }
+
+    .sidebar-nav a {
+      display: block;
+      padding: 0.75rem 0;
+      font-size: var(--font-nav);
+      font-weight: 600;
+      color: var(--color-text);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .sidebar-nav a:hover {
+      color: var(--color-hover);
+    }
+
+    /* FIXED: Services button aligned with others, sub-items indented */
+    .sidebar-services-list {
+      margin-left: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .sidebar-services-list a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: normal;
+      border-bottom: none;
+      padding-left: 0;
+    }
+
+    .lang-toggle-mobile {
+      border: none;
+      background: none;
+      font-size: var(--font-nav);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--color-text);
+      padding: 0;
+      margin-top: auto;
+      text-align: left;
+      width: fit-content;
+    }
+
+    .lang-toggle-mobile:hover {
+      color: var(--color-hover);
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .nav {
+      padding: var(--spacing) 0;
+      gap: var(--spacing);
     }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuBtn = document.querySelector('.mobile-menu-btn');
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.overlay');
+
+    function closeMenu() {
+      sidebar.classList.remove('active');
+      overlay.classList.remove('active');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    function openMenu() {
+      sidebar.classList.add('active');
+      overlay.classList.add('active');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    if (menuBtn) {
+      menuBtn.addEventListener('click', () => {
+        if (sidebar.classList.contains('active')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
+    }
+
+    if (overlay) {
+      overlay.addEventListener('click', closeMenu);
+    }
+
+    if (sidebar) {
+      sidebar.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', closeMenu);
+      });
+    }
+  });
+</script>
