@@ -2,88 +2,56 @@
 import HeaderLink from './HeaderLink.astro';
 import { Astro } from 'astro';
 
+const lang = Astro.url.pathname.startsWith('/fi') ? 'fi' : 'en';
+const toggleLang = lang === 'fi' ? 'en' : 'fi';
+const togglePath = Astro.url.pathname.replace(`/${lang}`, `/${toggleLang}`);
+const prefix = `/${lang}`;
+
 const translations = {
-  en: {
-    home: 'Home',
-    about: 'About',
-    services: 'Services',
-    references: 'References',
-    contact: 'Contact',
-    serviceItems: {
-      transactions: 'Transactions',
-      commercial: 'Commercial Contracts',
-      corporate: 'Corporate',
-      legalops: 'Legal Operations'
-    }
-  },
-  fi: {
-    home: 'Etusivu',
-    about: 'Yritys',
-    services: 'Palvelut',
-    references: 'Referenssit',
-    contact: 'Yhteystiedot',
-    serviceItems: {
-      transactions: 'Kaupankäynti',
-      commercial: 'Kaupalliset sopimukset',
-      corporate: 'Yhtiöoikeus',
-      legalops: 'Oikeudelliset toiminnot'
-    }
-  }
+  en: { home: 'Home', about: 'About', services: 'Services', references: 'References', contact: 'Contact', 
+        serviceItems: { transactions: 'Transactions', commercial: 'Commercial Contracts', corporate: 'Corporate', legalops: 'Legal Operations' } },
+  fi: { home: 'Etusivu', about: 'Yritys', services: 'Palvelut', references: 'Referenssit', contact: 'Yhteystiedot', 
+        serviceItems: { transactions: 'Kaupankäynti', commercial: 'Kaupalliset sopimukset', corporate: 'Yhtiöoikeus', legalops: 'Oikeudelliset toiminnot' } }
 };
 
-const lang = Astro.url.pathname.startsWith('/fi') ? 'fi' : 'en';
-const toggleLang = lang === 'en' ? 'fi' : 'en';
-const togglePath = Astro.url.pathname.replace(`/${lang}`, `/${toggleLang}`);
-
 const services = [
-  { labelKey: 'serviceItems.transactions', href: '/services/transactions' },
-  { labelKey: 'serviceItems.commercial', href: '/services/commercial-contracts' },
-  { labelKey: 'serviceItems.corporate', href: '/services/corporate' },
-  { labelKey: 'serviceItems.legalops', href: '/services/legal-operations' },
+  { key: 'serviceItems.transactions', href: '/services/transactions' },
+  { key: 'serviceItems.commercial', href: '/services/commercial-contracts' },
+  { key: 'serviceItems.corporate', href: '/services/corporate' },
+  { key: 'serviceItems.legalops', href: '/services/legal-operations' }
 ];
 
-function t(key: string): string {
-  const keys = key.split('.');
-  let result: any = translations[lang];
-  for (const k of keys) {
+const t = (key: string) => {
+  let result = translations[lang];
+  for (const k of key.split('.')) {
     result = result?.[k];
-    if (result === undefined) {
-      return key;
-    }
+    if (result === undefined) return key;
   }
   return result;
-}
+};
 ---
 
 <header class="header">
   <nav class="nav" aria-label="Primary navigation">
-    <!-- Logo FLUSH LEFT -->
-    <a href={`/${lang}/`} class="logo" aria-label="CCL Advisory Oy Home">
+    <a href={`${prefix}/`} class="logo" aria-label="CCL Advisory Oy Home">
       <img src="/media/HG Logo 1 1600x600 icon.png" alt="CCL Advisory logo" class="logo-img" />
     </a>
 
-    <!-- Desktop nav CENTERED -->
     <ul class="nav-list desktop-only">
-      <li><HeaderLink href={`/${lang}/`}>{t('home')}</HeaderLink></li>
-      <li><HeaderLink href={`/${lang}/about`}>{t('about')}</HeaderLink></li>
+      <li><HeaderLink href={`${prefix}/`}>{t('home')}</HeaderLink></li>
+      <li><HeaderLink href={`${prefix}/about`}>{t('about')}</HeaderLink></li>
       <li class="nav-item dropdown">
-        <!-- Services is now clickable LINK + dropdown toggle -->
-        <HeaderLink href={`/${lang}/services`} class="services-link">
-          <span class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-            {t('services')}
-          </span>
+        <HeaderLink href={`${prefix}/services`} class="services-link">
+          <span class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">{t('services')}</span>
         </HeaderLink>
         <ul class="dropdown-menu">
-          {services.map((service) => (
-            <li><HeaderLink href={`/${lang}${service.href}`}>{t(service.labelKey)}</HeaderLink></li>
-          ))}
+          {services.map(s => <li><HeaderLink href={`${prefix}${s.href}`}>{t(s.key)}</HeaderLink></li>)}
         </ul>
       </li>
-      <li><HeaderLink href={`/${lang}/references`}>{t('references')}</HeaderLink></li>
-      <li><HeaderLink href={`/${lang}/contact`}>{t('contact')}</HeaderLink></li>
+      <li><HeaderLink href={`${prefix}/references`}>{t('references')}</HeaderLink></li>
+      <li><HeaderLink href={`${prefix}/contact`}>{t('contact')}</HeaderLink></li>
     </ul>
 
-    <!-- Right side -->
     <div class="nav-right">
       <button class="lang-toggle desktop-only" type="button" onclick={`window.location.href='${togglePath}'`}
               aria-label={lang === 'en' ? 'Switch to Finnish' : 'Vaihda kieli englanniksi'}>
@@ -95,20 +63,17 @@ function t(key: string): string {
     </div>
   </nav>
 
-  <!-- Mobile-only elements -->
   <div class="overlay mobile-only" id="overlay"></div>
   <aside class="sidebar mobile-only" id="sidebar">
     <nav class="sidebar-nav">
-      <HeaderLink href={`/${lang}/`}>{t('home')}</HeaderLink>
-      <HeaderLink href={`/${lang}/about`}>{t('about')}</HeaderLink>
-      <HeaderLink href={`/${lang}/services`}>{t('services')}</HeaderLink>
+      <HeaderLink href={`${prefix}/`}>{t('home')}</HeaderLink>
+      <HeaderLink href={`${prefix}/about`}>{t('about')}</HeaderLink>
+      <HeaderLink href={`${prefix}/services`}>{t('services')}</HeaderLink>
       <div class="sidebar-services-list">
-        {services.map((service) => (
-          <HeaderLink href={`/${lang}${service.href}`}>{t(service.labelKey)}</HeaderLink>
-        ))}
+        {services.map(s => <HeaderLink href={`${prefix}${s.href}`}>{t(s.key)}</HeaderLink>)}
       </div>
-      <HeaderLink href={`/${lang}/references`}>{t('references')}</HeaderLink>
-      <HeaderLink href={`/${lang}/contact`}>{t('contact')}</HeaderLink>
+      <HeaderLink href={`${prefix}/references`}>{t('references')}</HeaderLink>
+      <HeaderLink href={`${prefix}/contact`}>{t('contact')}</HeaderLink>
       <button class="lang-toggle-mobile" type="button" onclick={`window.location.href='${togglePath}'`}
               aria-label={lang === 'en' ? 'Switch to Finnish' : 'Vaihda kieli englanniksi'}>
         {toggleLang.toUpperCase()}
@@ -136,7 +101,6 @@ function t(key: string): string {
     z-index: 10;
   }
 
-  /* Visibility utilities */
   .desktop-only { display: block; }
   .mobile-only { display: none; }
 
@@ -148,7 +112,6 @@ function t(key: string): string {
     grid-template-columns: auto 1fr auto;
     align-items: center;
     gap: var(--spacing-lg);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   }
 
   .logo {
@@ -182,53 +145,31 @@ function t(key: string): string {
     justify-self: end;
   }
 
-  .nav-item {
-    position: relative;
-  }
+  .nav-item { position: relative; }
+  .services-link { display: contents; }
 
-  /* Services link styling - acts as both link AND hover trigger */
-  .services-link {
-    display: contents; /* Makes HeaderLink transparent wrapper */
-  }
-
-  .nav-list a,
-  .dropdown-toggle,
-  .lang-toggle {
-    font-size: var(--font-nav);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 500;
-    color: var(--color-text);
-    background: none;
-    border: none;
-    padding: 0.25rem 0;
-    cursor: pointer;
-    text-decoration: none;
-    transition: color 160ms ease-out;
+  .nav-list a, .dropdown-toggle, .lang-toggle {
+    font-size: var(--font-nav); letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 500; color: var(--color-text); background: none; border: none;
+    padding: .25rem 0; cursor: pointer; text-decoration: none; transition: color 160ms ease-out;
     white-space: nowrap;
   }
 
-  .nav-list a:hover,
-  .dropdown-toggle:hover,
-  .lang-toggle:hover {
-    color: var(--color-hover);
-  }
+  .nav-list a:hover, .dropdown-toggle:hover, .lang-toggle:hover { color: var(--color-hover); }
 
   .dropdown-toggle {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: .25rem;
   }
 
   .dropdown-toggle::after {
     content: '▾';
-    font-size: 0.7em;
+    font-size: .7em;
     transition: transform 160ms ease-out;
   }
 
-  .dropdown:hover .dropdown-toggle::after {
-    transform: rotate(180deg);
-  }
+  .dropdown:hover .dropdown-toggle::after { transform: rotate(180deg); }
 
   .dropdown-menu {
     position: absolute;
@@ -239,30 +180,26 @@ function t(key: string): string {
     background: #ffffff;
     list-style: none;
     margin: 0;
-    padding: 0.4rem 0;
-    border-radius: 0.5rem;
-    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+    padding: .4rem 0;
+    border-radius: .5rem;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, .12);
     opacity: 0;
     visibility: hidden;
     transition: opacity 140ms ease-out, transform 140ms ease-out, visibility 140ms ease-out;
   }
 
-  .dropdown-menu li {
-    padding: 0.1rem 0.4rem;
-  }
+  .dropdown-menu li { padding: .1rem .4rem; }
 
   .dropdown-menu a {
     display: block;
     width: 100%;
-    padding: 0.35rem 0.8rem;
-    font-size: 0.9rem;
+    padding: .35rem .8rem;
+    font-size: .9rem;
     text-transform: none;
-    letter-spacing: 0.02em;
+    letter-spacing: .02em;
   }
 
-  .dropdown-menu a:hover {
-    color: var(--color-hover);
-  }
+  .dropdown-menu a:hover { color: var(--color-hover); }
 
   .dropdown:hover .dropdown-menu,
   .dropdown:focus-within .dropdown-menu {
@@ -271,16 +208,11 @@ function t(key: string): string {
     transform: translateX(-50%);
   }
 
-  .lang-toggle {
-    font-size: var(--font-nav);
-    letter-spacing: 0.12em;
-  }
-
   .mobile-menu-btn {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: .5rem;
   }
 
   .mobile-menu-btn span {
@@ -290,10 +222,9 @@ function t(key: string): string {
     background: var(--color-text);
     margin: 5px 0;
     border-radius: 2px;
-    transition: all 0.3s ease;
+    transition: all .3s ease;
   }
 
-  /* MOBILE ≤1024px */
   @media (max-width: 1024px) {
     .desktop-only { display: none !important; }
     .mobile-only { display: block; }
@@ -309,51 +240,45 @@ function t(key: string): string {
       left: 0;
       height: 100vh;
       background: var(--color-bg);
-      box-shadow: 3px 0 15px rgba(0, 0, 0, 0.3);
+      box-shadow: 3px 0 15px rgba(0, 0, 0, .3);
       width: max-content;
       max-width: 80vw;
       overflow-y: auto;
       padding: var(--spacing-lg) var(--spacing);
       box-sizing: border-box;
       transform: translateX(-110%);
-      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: transform .3s cubic-bezier(.25, .46, .45, .94);
       z-index: 1001;
       display: flex;
       flex-direction: column;
       gap: var(--spacing-lg);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
     }
 
-    .sidebar.active {
-      transform: translateX(0);
-    }
+    .sidebar.active { transform: translateX(0); }
 
     .sidebar-nav a {
       display: block;
-      padding: 0.75rem 0;
+      padding: .75rem 0;
       font-size: var(--font-nav);
       font-weight: 600;
       color: var(--color-text);
       text-decoration: none;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: .1em;
       border-bottom: 1px solid #e5e5e5;
     }
 
-    .sidebar-nav a:hover {
-      color: var(--color-hover);
-    }
+    .sidebar-nav a:hover { color: var(--color-hover); }
 
-    /* FIXED: Services button aligned with others, sub-items indented */
     .sidebar-services-list {
       margin-left: 1.25rem;
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: .25rem;
     }
 
     .sidebar-services-list a {
-      font-size: 0.85rem;
+      font-size: .85rem;
       font-weight: 500;
       text-transform: none;
       letter-spacing: normal;
@@ -362,12 +287,12 @@ function t(key: string): string {
     }
 
     .lang-toggle-mobile {
-      border: none;
-      background: none;
       font-size: var(--font-nav);
-      letter-spacing: 0.12em;
+      letter-spacing: .12em;
       text-transform: uppercase;
       font-weight: 500;
+      border: none;
+      background: none;
       cursor: pointer;
       color: var(--color-text);
       padding: 0;
@@ -376,9 +301,7 @@ function t(key: string): string {
       width: fit-content;
     }
 
-    .lang-toggle-mobile:hover {
-      color: var(--color-hover);
-    }
+    .lang-toggle-mobile:hover { color: var(--color-hover); }
 
     .overlay {
       position: fixed;
@@ -386,10 +309,10 @@ function t(key: string): string {
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, .4);
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.3s ease;
+      transition: opacity .3s ease;
       z-index: 1000;
     }
 
@@ -409,42 +332,24 @@ function t(key: string): string {
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const menuBtn = document.querySelector('.mobile-menu-btn');
-    const sidebar = document.querySelector('.sidebar');
-    const overlay = document.querySelector('.overlay');
-
-    function closeMenu() {
-      sidebar.classList.remove('active');
-      overlay.classList.remove('active');
-      menuBtn.setAttribute('aria-expanded', 'false');
+    const [$btn, $sidebar, $overlay] = ['.mobile-menu-btn', '.sidebar', '.overlay'].map(q => document.querySelector(q));
+    
+    const closeMenu = () => {
+      $sidebar?.classList.remove('active');
+      $overlay?.classList.remove('active');
+      $btn?.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
-    }
-
-    function openMenu() {
-      sidebar.classList.add('active');
-      overlay.classList.add('active');
-      menuBtn.setAttribute('aria-expanded', 'true');
+    };
+    
+    const openMenu = () => {
+      $sidebar?.classList.add('active');
+      $overlay?.classList.add('active');
+      $btn?.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
-    }
+    };
 
-    if (menuBtn) {
-      menuBtn.addEventListener('click', () => {
-        if (sidebar.classList.contains('active')) {
-          closeMenu();
-        } else {
-          openMenu();
-        }
-      });
-    }
-
-    if (overlay) {
-      overlay.addEventListener('click', closeMenu);
-    }
-
-    if (sidebar) {
-      sidebar.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', closeMenu);
-      });
-    }
+    $btn?.addEventListener('click', () => $sidebar.classList.contains('active') ? closeMenu() : openMenu());
+    $overlay?.addEventListener('click', closeMenu);
+    $sidebar?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
   });
 </script>
