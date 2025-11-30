@@ -1,4 +1,12 @@
 ---
-import { redirect } from 'astro:redirects';
-redirect('/en/');
+// Server-rendered redirect - NO dynamic imports needed
+export const prerender = false;
+
+const lang = Astro.request.headers.get('accept-language')?.startsWith('fi') ? 'fi' : 'en';
+
+if (Astro.url.pathname === '/') {
+  return Astro.redirect(`/${lang}/`);
+}
 ---
+<!-- Fallback (won't show due to redirect) -->
+Redirecting...

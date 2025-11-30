@@ -1,23 +1,12 @@
-// @ts-check
 import { defineConfig } from "astro/config";
-import mdx from "@astrojs/mdx";
-import sitemap from "@astrojs/sitemap";
 import cloudflare from "@astrojs/cloudflare";
 
 export default defineConfig({
-  site: "https://example.com",
-  integrations: [mdx(), sitemap()],
-  adapter: cloudflare({
-    platformProxy: {
-      enabled: true,
-    },
-  }),
-
+  output: "static",
+  adapter: cloudflare(),
   i18n: {
-    defaultLocale: "en",
+    defaultLocale: "fi",
     locales: ["en", "fi"],
-    routing: {
-      prefixDefaultLocale: true, // URLs: /en/... and /fi/...
-    },
+    routing: { prefixDefaultLocale: false },
   },
 });
