@@ -19,7 +19,7 @@ const { Content } = await render(post);
 <Layout title={post.data.title} lang="en">
 	<article>
 		<h1>{post.data.title}</h1>
-		<time>{post.data.date.toLocaleDateString()}</time>
+		<time>{post.data.pubDate ? new Date(post.data.pubDate).toLocaleDateString() : 'No date'}</time>
 		<Content />
 	</article>
 </Layout>
