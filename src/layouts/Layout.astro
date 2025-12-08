@@ -4,16 +4,23 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-const { title, description = "CCL Advisory Oy - Professional legal advisory services", lang = "en" } = Astro.props;
+const {
+  title,
+  description = 'CCL Advisory Oy - Professional legal advisory services',
+  lang = 'en',
+} = Astro.props;
 ---
 
 <html lang={lang}>
   <head>
-    <!-- Google Fonts: Preconnect + Inter (400,500,600 weights) -->
+    <!-- Google Fonts: Preconnect + Montserrat (400,500,600 weights) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
-    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    >
+
     <BaseHead title={title} description={description} />
   </head>
   <body>

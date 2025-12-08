@@ -1,20 +1,572 @@
 ---
-import Header from '../../components/Header.astro';
+import Layout from '../../layouts/Layout.astro';
+import rawHeroImage from '../../../public/media/IMG_5760.JPG';
+import rawWhyImage from '../../../public/media/001381380001.jpg';
+import rawRefsImage from '../../../public/media/001381380009.jpg';
+import { getImage } from 'astro:assets';
+import { getCollection } from 'astro:content';
+
+const optimizedHero = await getImage({ src: rawHeroImage });
+const optimizedWhy = await getImage({ src: rawWhyImage });
+const optimizedRefs = await getImage({ src: rawRefsImage });
+
+const title = 'CCL Advisory | Home';
+const description =
+  'Professional legal advisory services for complex transactions, commercial contracts, corporate matters and legal operations.';
+
+// Load all reference items from /src/content/references
+const references = await getCollection('references');
+
+// Safety fallback if no references found
+const safeReferences = references.length > 0 ? references : [{
+  data: { 
+    text: 'References coming soon...', 
+    date: 'TBD' 
+  }
+}];
+
+// Debug log (remove in production)
+console.log('References found:', references.length);
 ---
 
-<html lang="en">
-  <head>
-    <title>CCL Advisory Oy | Home</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Professional legal advisory services" />
-  </head>
-  <body>
-    <Header />
-    <main style="padding: 2rem;">
-      <h1>Welcome to CCL Advisory</h1>
-      <p>Your professional legal advisory partner.</p>
-      <!-- Add your full homepage content here -->
-    </main>
-  </body>
-</html>
+<Layout title={title} description={description} lang="en">
+  <section class="hero-section" style={`background-image: url(${optimizedHero.src});`}>
+    <div class="hero-content">
+      <h1>CCL Advisory</h1>
+      <p>Boutique law firm for bespoke legal solutions.</p>
+      <a href="/en/contact" class="hero-cta">Get In Touch</a>
+    </div>
+  </section>
+
+  <section class="about-section">
+    <div class="about-content">
+      <h2>About</h2>
+      <p>
+        CCL Advisory is a boutique law firm delivering tailor-made, high-end legal solutions for companies and individuals. 
+        We pride ourselves on our top-notch expertise in complex transactions, commercial contracts, corporate matters, 
+        and legal operations. If a challenge arises, we advocate strongly for our clients and do everything we can to deliver results.
+      </p>
+      <p>
+        With a dedication to excellence and a focus on each client's unique needs, we've earned a reputation for outstanding service.
+      </p>
+      <a href="/en/about" class="about-cta">Read More</a>
+    </div>
+  </section>
+
+  <section class="why-section" style={`background-image: url(${optimizedWhy.src});`}>
+    <div class="why-content">
+      <h2>Why Choose CCL Advisory?</h2>
+      <div class="why-grid">
+        <div class="why-card">
+          <h3>Tailored Solutions</h3>
+          <p>
+            Every transaction is unique. We craft precise legal strategies that align perfectly with your specific business objectives 
+            and commercial needs across complex deals and contracts.
+          </p>
+        </div>
+        <div class="why-card">
+          <h3>Results-Driven</h3>
+          <p>
+            Your success is our success. We bring relentless focus and strategic execution to every corporate matter and legal operation, 
+            leaving no detail unexplored.
+          </p>
+        </div>
+        <div class="why-card">
+          <h3>Legal Excellence</h3>
+          <p>
+            Continuous expertise development ensures we deliver cutting-edge solutions. We stay ahead of market trends and regulatory 
+            changes to protect your interests.
+          </p>
+        </div>
+        <div class="why-card">
+          <h3>Clear Communication</h3>
+          <p>
+            No legalese. We provide straightforward, transparent guidance so you always understand your options, risks, and next steps 
+            in every engagement.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services-list-section">
+    <div class="services-list-inner">
+      <h2 class="services-list-title">What we do</h2>
+
+      <div class="services-list-items">
+        <a class="service-row" href="/en/services/transactions">
+          <span>Transactions</span>
+          <span class="service-row-icon">+</span>
+        </a>
+
+        <a class="service-row" href="/en/services/commercial-contracts">
+          <span>Commercial Contracts</span>
+          <span class="service-row-icon">+</span>
+        </a>
+
+        <a class="service-row" href="/en/services/corporate">
+          <span>Corporate</span>
+          <span class="service-row-icon">+</span>
+        </a>
+
+        <a class="service-row" href="/en/services/legal-operations">
+          <span>Legal Operations</span>
+          <span class="service-row-icon">+</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="refs-section" style={`background-image: url(${optimizedRefs.src});`}>
+    <div class="refs-overlay"></div>
+    <div class="refs-inner">
+      <h2 class="refs-title">Latest references</h2>
+
+      <div class="refs-slide">
+        <p class="refs-text" id="refs-text">
+          {safeReferences[0].data.text}
+        </p>
+        <p class="refs-date" id="refs-date">
+          {safeReferences[0].data.date}
+        </p>
+      </div>
+
+      <button class="refs-arrow refs-arrow-left" type="button" aria-label="Previous reference" id="refs-prev">
+        ←
+      </button>
+      <button class="refs-arrow refs-arrow-right" type="button" aria-label="Next reference" id="refs-next">
+        →
+      </button>
+    </div>
+
+    <script is:inline>
+      (function () {
+        // Safely inject the references data as a JSON object directly
+        const items = {JSON.stringify(safeReferences.map(r => r.data))};
+        let index = 0;
+
+        const textEl = document.getElementById('refs-text');
+        const dateEl = document.getElementById('refs-date');
+        const prevBtn = document.getElementById('refs-prev');
+        const nextBtn = document.getElementById('refs-next');
+
+        if (!textEl || !dateEl || !prevBtn || !nextBtn || !items.length) return;
+
+        function render() {
+          const item = items[index];
+          textEl.textContent = item.text;
+          dateEl.textContent = item.date;
+        }
+
+        // Initial render
+        render();
+
+        prevBtn.addEventListener('click', () => {
+          index = (index - 1 + items.length) % items.length;
+          render();
+        });
+
+        nextBtn.addEventListener('click', () => {
+          index = (index + 1) % items.length;
+          render();
+        });
+      })();
+    </script>
+  </section>
+
+</Layout>
+
+<style>
+  .hero-section {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    height: 100vh;
+    min-height: 600px;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-content {
+    text-align: center;
+    color: white;
+    max-width: 700px;
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .hero-section h1 {
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 600;
+    line-height: 1.15;
+    margin: 0 0 7.55rem 0;
+    color: white !important;
+  }
+
+  .hero-section p {
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-weight: 300;
+    line-height: 1.5;
+    color: white;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-cta,
+  .about-cta {
+    width: 240px;
+    height: 62px;
+    line-height: 58px;
+    padding: 0;
+    display: block;
+    text-align: center;
+    border-radius: 40px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: all 300ms ease;
+    text-decoration: none;
+  }
+
+  .hero-cta {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    color: white;
+    margin: 1rem auto 2rem auto;
+  }
+
+  .hero-cta:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+  }
+
+  .about-section {
+    padding: 6rem 0;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-content {
+    max-width: 750px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .about-section h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0 0 1.5rem 0;
+    text-align: left;
+    color: rgb(var(--black));
+  }
+
+  .about-section p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0 0 1.5rem 0;
+    color: rgb(var(--gray-dark));
+    text-align: left;
+    max-width: 650px;
+  }
+
+  .about-cta {
+    background: transparent;
+    border: 2px solid rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, 0.75);
+    margin: 2rem auto 0 auto;
+  }
+
+  .about-cta:hover {
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.75);
+    transform: translateY(-2px);
+  }
+
+  .why-section {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    padding: 4rem 0;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .why-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .why-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.52);
+    z-index: 0;
+  }
+
+  .why-section h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0 0 3rem 0;
+    text-align: left;
+    color: rgb(var(--black));
+    position: relative;
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    position: relative;
+  }
+
+  .why-card {
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .why-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    color: rgb(var(--black));
+  }
+
+  .why-card p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0;
+    color: rgb(var(--gray-dark));
+    text-align: left;
+  }
+
+  .services-list-section {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    padding: 6rem 0;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .services-list-inner {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr);
+    gap: 4rem;
+  }
+
+  .services-list-title {
+    font-size: clamp(2.6rem, 4vw, 3.2rem);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: #111111;
+    margin: 0;
+    align-self: flex-start;
+  }
+
+  .services-list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-self: center;
+  }
+
+  .service-row {
+    width: 100%;
+    padding: 0.75rem 0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #111111;
+    color: #111111;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: clamp(1.3rem, 2.3vw, 1.6rem);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-align: left;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .service-row-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+  }
+
+  .service-row:hover {
+    opacity: 0.8;
+  }
+
+  /* References carousel */
+  .refs-section {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    height: 100vh;
+    min-height: 600px;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .refs-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 0;
+  }
+
+  .refs-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    width: 100%;
+    padding: 0 3rem;
+    text-align: center;
+    color: #ffffff;
+    margin: 0 auto;
+  }
+
+  .refs-title {
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    font-weight: 500;
+    margin-bottom: 3rem;
+    color: #ffffff;
+  }
+
+  .refs-slide {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .refs-text {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .refs-date {
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .refs-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+
+  .refs-arrow-left {
+    left: 0;
+  }
+
+  .refs-arrow-right {
+    right: 0;
+  }
+
+  .refs-arrow:hover {
+    background: #ffffff;
+  }
+
+  @media (max-width: 768px) {
+    .hero-section {
+      background-attachment: scroll;
+      height: 100vh;
+      background-position: center 40%;
+    }
+
+    .hero-content {
+      padding: 1.25rem;
+    }
+
+    .about-section {
+      padding: 4rem 1.5rem;
+    }
+
+    .why-section {
+      padding: 3rem 1rem;
+      background-attachment: scroll;
+    }
+
+    .why-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .services-list-inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .services-list-title {
+      text-align: left;
+    }
+
+    .refs-section {
+      background-attachment: scroll;
+      padding: 4rem 1.5rem;
+    }
+
+    .refs-inner {
+      padding: 0 1.5rem;
+      max-width: 100%;
+    }
+
+    .refs-arrow-left {
+      left: 1rem;
+    }
+
+    .refs-arrow-right {
+      right: 1rem;
+    }
+  }
+</style>

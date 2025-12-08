@@ -1,20 +1,224 @@
 ---
-import Header from '../../components/Header.astro';
+import Layout from '../../layouts/Layout.astro';
+import heroImage from '../../../public/media/IMG_5760.JPG';
+
+const title = 'CCL Advisory Oy | Etusivu';
+const description =
+  'Ammatilliset lakiasiantuntijapalvelut transaktioihin, kaupallisiin sopimuksiin, yhtiöoikeuteen ja legal operations -toimintoihin.';
 ---
 
-<html lang="fi">
-  <head>
-    <title>CCL Advisory Oy | Etusivu</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Ammattitaitoista oikeudellista neuvontaa" />
-  </head>
-  <body>
-    <Header />
-    <main style="padding: 2rem;">
-      <h1>Tervetuloa CCL Advisoryyn</h1>
-      <p>Ammattitaitoinen oikeudellinen neuvonantajasi.</p>
-      <!-- Add your full Finnish homepage content here -->
-    </main>
-  </body>
-</html>
+<Layout title={title} description={description} lang="fi">
+  <!-- Hero: sliding window with fixed background -->
+  <section
+    class="hero-window"
+    style={`background-image: url(${heroImage.src});`}
+  >
+    <div class="hero-overlay">
+      <h1>CCL Advisory Oy</h1>
+      <p>Riippumaton lakiasiantuntija transaktioihin, kaupallisiin sopimuksiin, yhtiöoikeudellisiin kysymyksiin ja legal operations -kehittämiseen.</p>
+    </div>
+  </section>
+
+  <!-- Services synopsis + button -->
+  <section class="home-services-intro">
+    <div class="home-services-text">
+      <h2>Palvelut</h2>
+      <p>
+        CCL Advisory tukee yrityksiä ja sijoittajia strategisissa transaktioissa, kaupallisten sopimusten hallinnassa,
+        yhtiöoikeudellisissa asioissa sekä tehokkaiden legal operations -toimintojen rakentamisessa.
+      </p>
+    </div>
+
+    <div class="home-services-cta">
+      <a href="/fi/palvelut" class="btn-primary">
+        Katso kaikki palvelut
+      </a>
+    </div>
+  </section>
+
+  <!-- Service tiles grid -->
+  <section class="home-services-grid">
+    <article class="service-card">
+      <a href="/fi/palvelut/transaktiot" class="service-card-link">
+        <h3>Transaktiot</h3>
+        <div class="service-card-image service-card-image--transactions"></div>
+      </a>
+    </article>
+
+    <article class="service-card">
+      <a href="/fi/palvelut/kaupalliset-sopimukset" class="service-card-link">
+        <h3>Kaupalliset sopimukset</h3>
+        <div class="service-card-image service-card-image--commercial"></div>
+      </a>
+    </article>
+
+    <article class="service-card">
+      <a href="/fi/palvelut/yhtiooikeus" class="service-card-link">
+        <h3>Yhtiöoikeus</h3>
+        <div class="service-card-image service-card-image--corporate"></div>
+      </a>
+    </article>
+
+    <article class="service-card">
+      <a href="/fi/palvelut/legal-operations" class="service-card-link">
+        <h3>Legal Operations</h3>
+        <div class="service-card-image service-card-image--legalops"></div>
+      </a>
+    </article>
+  </section>
+</Layout>
+
+<style>
+  /* Same CSS as EN version */
+
+  .hero-window {
+    position: relative;
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    height: 60vh;
+    min-height: 360px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-overlay {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: #ffffff;
+    padding: 2.5rem 1.75rem;
+    max-width: 880px;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 10px;
+  }
+
+  .hero-overlay h1 {
+    font-size: clamp(2.3rem, 3.4vw, 3rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-overlay p {
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .hero-window {
+      background-attachment: scroll;
+      height: 55vh;
+    }
+  }
+
+  .home-services-intro {
+    max-width: 960px;
+    margin: 3.5rem auto 2.5rem;
+    padding-inline: 1.5rem;
+    text-align: center;
+  }
+
+  .home-services-text h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .home-services-text p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .home-services-cta {
+    margin-top: 1.75rem;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 0.9rem 2.8rem;
+    border-radius: 999px;
+    background: #1c2230;
+    color: #ffffff;
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+  }
+
+  .btn-primary:hover {
+    background: #262e40;
+  }
+
+  .home-services-grid {
+    max-width: 1120px;
+    margin: 0 auto 4rem;
+    padding-inline: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 960px) {
+    .home-services-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 600px) {
+    .home-services-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .service-card {
+    list-style: none;
+  }
+
+  .service-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .service-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
+  }
+
+  .service-card-image {
+    height: 180px;
+    border-radius: 8px;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+  }
+
+  .service-card-link:hover .service-card-image {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  }
+
+  .service-card-image--transactions {
+    background-image: linear-gradient(135deg, #0f4c81, #1d78c1);
+  }
+
+  .service-card-image--commercial {
+    background-image: linear-gradient(135deg, #4b3f72, #9f7aea);
+  }
+
+  .service-card-image--corporate {
+    background-image: linear-gradient(135deg, #184d47, #2a9d8f);
+  }
+
+  .service-card-image--legalops {
+    background-image: linear-gradient(135deg, #5a4b2b, #b8860b);
+  }
+</style>
