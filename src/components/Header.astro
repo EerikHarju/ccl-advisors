@@ -15,10 +15,10 @@ const translations = {
 };
 
 const services = [
-  { key: 'serviceItems.transactions', href: '/services/transactions' },
-  { key: 'serviceItems.commercial', href: '/services/commercial-contracts' },
-  { key: 'serviceItems.corporate', href: '/services/corporate' },
-  { key: 'serviceItems.legalops', href: '/services/legal-operations' }
+  { key: 'serviceItems.transactions', href: '/services#transactions' },
+  { key: 'serviceItems.commercial', href: '/services#commercial-contracts' },
+  { key: 'serviceItems.corporate', href: '/services#corporate' },
+  { key: 'serviceItems.legalops', href: '/services#legal-operations' }
 ];
 
 const t = (key: string) => {
@@ -34,7 +34,7 @@ const t = (key: string) => {
 <header class="header">
   <nav class="nav" aria-label="Primary navigation">
     <a href={`${prefix}/`} class="logo" aria-label="CCL Advisory Oy Home">
-      <img src="/media/HG Logo 1 1600x600 icon.png" alt="CCL Advisory logo" class="logo-img" />
+      <img src="/media/CCL.jpg" alt="CCL Advisory logo" class="logo-img" />
     </a>
 
     <ul class="nav-list desktop-only">
@@ -48,8 +48,8 @@ const t = (key: string) => {
           {services.map(s => <li><HeaderLink href={`${prefix}${s.href}`}>{t(s.key)}</HeaderLink></li>)}
         </ul>
       </li>
-      <li><HeaderLink href={`${prefix}/references`}>{t('references')}</HeaderLink></li>
-      <li><HeaderLink href={`${prefix}/contact`}>{t('contact')}</HeaderLink></li>
+      <HeaderLink href={`${prefix}/#references`}>{t('references')}</HeaderLink>
+      <li><HeaderLink href="#contact">{t('contact')}</HeaderLink></li>
     </ul>
 
     <div class="nav-right">
@@ -70,10 +70,12 @@ const t = (key: string) => {
       <HeaderLink href={`${prefix}/about`}>{t('about')}</HeaderLink>
       <HeaderLink href={`${prefix}/services`}>{t('services')}</HeaderLink>
       <div class="sidebar-services-list">
-        {services.map(s => <HeaderLink href={`${prefix}${s.href}`}>{t(s.key)}</HeaderLink>)}
+        {services.map(s => (
+          <HeaderLink href={`${prefix}${s.href}`}>{t(s.key)}</HeaderLink>
+        ))}
       </div>
-      <HeaderLink href={`${prefix}/references`}>{t('references')}</HeaderLink>
-      <HeaderLink href={`${prefix}/contact`}>{t('contact')}</HeaderLink>
+      <HeaderLink href={`${prefix}/#references`}>{t('references')}</HeaderLink>
+      <HeaderLink href="#contact">{t('contact')}</HeaderLink>
       <button class="lang-toggle-mobile" type="button" onclick={`window.location.href='${togglePath}'`}
               aria-label={lang === 'en' ? 'Switch to Finnish' : 'Vaihda kieli englanniksi'}>
         {toggleLang.toUpperCase()}
@@ -122,9 +124,10 @@ const t = (key: string) => {
   }
 
   .logo-img {
-    height: clamp(32px, 6vw, 40px);
+    height: clamp(64px, 6vw, 40px);
     width: auto;
     display: block;
+    border-radius: 0 !important;
   }
 
   .nav-list {

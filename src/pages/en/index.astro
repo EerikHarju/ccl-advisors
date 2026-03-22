@@ -1,53 +1,50 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import rawHeroImage from '../../../public/media/IMG_5760.JPG';
-import rawWhyImage from '../../../public/media/001381380001.jpg';
-import rawRefsImage from '../../../public/media/001381380009.jpg';
+import rawWhyImage from '../../../public/media/IMG_5760.JPG';
+import rawRefsImage from '../../../public/media/IMG_5760.JPG';
 import { getImage } from 'astro:assets';
-import { getCollection } from 'astro:content';
+
+const prefix = '/en';
 
 const optimizedHero = await getImage({ src: rawHeroImage });
 const optimizedWhy = await getImage({ src: rawWhyImage });
 const optimizedRefs = await getImage({ src: rawRefsImage });
 
-const title = 'CCL Advisory | Home';
-const description =
-  'Professional legal advisory services for complex transactions, commercial contracts, corporate matters and legal operations.';
+const modules = import.meta.glob('/src/content/references/*.json', { eager: true });
 
-// Load all reference items from /src/content/references
-const references = await getCollection('references');
+// Unwrap the JSON modules
+const references = Object.values(modules).map(m => m.default);
 
-// Safety fallback if no references found
-const safeReferences = references.length > 0 ? references : [{
-  data: { 
-    text: 'References coming soon...', 
-    date: 'TBD' 
-  }
-}];
+const safeReferences = references.length > 0
+  ? references
+  : [{ text: 'References coming soon...', date: 'TBD' }];
 
-// Debug log (remove in production)
-console.log('References found:', references.length);
+const title = "CCL Advisory";
+const description = "Bespoke legal and consulting advisory services.";
 ---
 
 <Layout title={title} description={description} lang="en">
   <section class="hero-section" style={`background-image: url(${optimizedHero.src});`}>
     <div class="hero-content">
       <h1>CCL Advisory</h1>
-      <p>Boutique law firm for bespoke legal solutions.</p>
-      <a href="/en/contact" class="hero-cta">Get In Touch</a>
+      <p>Bespoke legal and consulting advisory services.</p>
+      <a href="#contact" class="hero-cta">Get In Touch</a>
     </div>
   </section>
 
   <section class="about-section">
-    <div class="about-content">
+    <div class="about-content about-opaque">
       <h2>About</h2>
       <p>
-        CCL Advisory is a boutique law firm delivering tailor-made, high-end legal solutions for companies and individuals. 
-        We pride ourselves on our top-notch expertise in complex transactions, commercial contracts, corporate matters, 
-        and legal operations. If a challenge arises, we advocate strongly for our clients and do everything we can to deliver results.
+        CCL Advisory is a boutique law and business consulting firm delivering bespoke, 
+        premium legal and business advice for companies and individuals. 
+        We provide top-tier expertise in complex transactions, commercial contracts, 
+        corporate matters, and legal operations. 
       </p>
       <p>
-        With a dedication to excellence and a focus on each client's unique needs, we've earned a reputation for outstanding service.
+        With a dedication to excellence and a focus on each client's unique needs, 
+        we have earned a reputation for outstanding, pragmatic service.
       </p>
       <a href="/en/about" class="about-cta">Read More</a>
     </div>
@@ -60,24 +57,27 @@ console.log('References found:', references.length);
         <div class="why-card">
           <h3>Tailored Solutions</h3>
           <p>
-            Every transaction is unique. We craft precise legal strategies that align perfectly with your specific business objectives 
-            and commercial needs across complex deals and contracts.
-          </p>
-        </div>
-        <div class="why-card">
-          <h3>Results-Driven</h3>
-          <p>
-            Your success is our success. We bring relentless focus and strategic execution to every corporate matter and legal operation, 
-            leaving no detail unexplored.
+            Each client and transaction is unique. We take on fewer mandates and dedicate full attention to your project, 
+            crafting precise legal strategies that align seamlessly with your business objectives.
           </p>
         </div>
         <div class="why-card">
           <h3>Legal Excellence</h3>
           <p>
-            Continuous expertise development ensures we deliver cutting-edge solutions. We stay ahead of market trends and regulatory 
-            changes to protect your interests.
+            Our focused, hands-on approach allows continuous development of 
+            expertise and the delivery of cutting-edge solutions. We stay ahead of market shifts and regulatory 
+            change to safeguard your interests and strengthen your position.
           </p>
         </div>
+        <div class="why-card">
+          <h3>Results-Driven</h3>
+          <p>
+            Your success is our success. Through a results-based approach grounded in trusted, long-term partnerships, 
+            we foster efficiency, consistency, and lasting value. Working closely with each client, we streamline legal 
+            workflows, anticipate challenges, and deliver practical solutions that sustain business growth.
+          </p>
+        </div>
+        
         <div class="why-card">
           <h3>Clear Communication</h3>
           <p>
@@ -94,22 +94,22 @@ console.log('References found:', references.length);
       <h2 class="services-list-title">What we do</h2>
 
       <div class="services-list-items">
-        <a class="service-row" href="/en/services/transactions">
+        <a class="service-row" href={`${prefix}/services#transactions`}>
           <span>Transactions</span>
           <span class="service-row-icon">+</span>
         </a>
 
-        <a class="service-row" href="/en/services/commercial-contracts">
+        <a class="service-row" href={`${prefix}/services#commercial-contracts`}>
           <span>Commercial Contracts</span>
           <span class="service-row-icon">+</span>
         </a>
 
-        <a class="service-row" href="/en/services/corporate">
+        <a class="service-row" href={`${prefix}/services#corporate`}>
           <span>Corporate</span>
           <span class="service-row-icon">+</span>
         </a>
 
-        <a class="service-row" href="/en/services/legal-operations">
+        <a class="service-row" href={`${prefix}/services#legal-operations`}>
           <span>Legal Operations</span>
           <span class="service-row-icon">+</span>
         </a>
@@ -117,17 +117,23 @@ console.log('References found:', references.length);
     </div>
   </section>
 
-  <section class="refs-section" style={`background-image: url(${optimizedRefs.src});`}>
+
+  <section id="references" class="refs-section" style={`background-image: url(${optimizedRefs.src});`}>
+    <script
+      type="application/json"
+      id="refs-data"
+      set:html={JSON.stringify(safeReferences)}
+    ></script>
     <div class="refs-overlay"></div>
     <div class="refs-inner">
       <h2 class="refs-title">Latest references</h2>
 
       <div class="refs-slide">
         <p class="refs-text" id="refs-text">
-          {safeReferences[0].data.text}
+          {safeReferences[0].text}
         </p>
         <p class="refs-date" id="refs-date">
-          {safeReferences[0].data.date}
+          {safeReferences[0].date}
         </p>
       </div>
 
@@ -140,9 +146,19 @@ console.log('References found:', references.length);
     </div>
 
     <script is:inline>
-      (function () {
-        // Safely inject the references data as a JSON object directly
-        const items = {JSON.stringify(safeReferences.map(r => r.data))};
+      document.addEventListener("DOMContentLoaded", () => {
+        const raw = document.getElementById("refs-data").textContent;
+        console.log('RAW JSON FROM SCRIPT TAG:', raw, 'TYPE:', typeof raw);
+
+        let items;
+        try {
+          items = JSON.parse(raw);
+          console.log('PARSED ITEMS:', items, 'TYPE:', typeof items, 'LENGTH:', items.length);
+        } catch (e) {
+          console.error('JSON PARSE FAILED:', e);
+          return;
+        }
+
         let index = 0;
 
         const textEl = document.getElementById('refs-text');
@@ -150,28 +166,45 @@ console.log('References found:', references.length);
         const prevBtn = document.getElementById('refs-prev');
         const nextBtn = document.getElementById('refs-next');
 
-        if (!textEl || !dateEl || !prevBtn || !nextBtn || !items.length) return;
+        console.log('ELEMENTS:', { textEl, dateEl, prevBtn, nextBtn });
 
         function render() {
           const item = items[index];
-          textEl.textContent = item.text;
-          dateEl.textContent = item.date;
+
+          // Fade out
+          textEl.classList.add('fade-out');
+          dateEl.classList.add('fade-out');
+
+          setTimeout(() => {
+            // Update content while faded out
+            textEl.textContent = item.text;
+            dateEl.textContent = item.date;
+
+            // Fade back in
+            textEl.classList.remove('fade-out');
+            dateEl.classList.remove('fade-out');
+          }, 200); // matches half the CSS transition
         }
 
-        // Initial render
         render();
 
         prevBtn.addEventListener('click', () => {
+          console.log('CLICK PREV BEFORE:', index);
           index = (index - 1 + items.length) % items.length;
+          console.log('CLICK PREV AFTER:', index);
           render();
         });
 
         nextBtn.addEventListener('click', () => {
+          console.log('CLICK NEXT BEFORE:', index);
           index = (index + 1) % items.length;
+          console.log('CLICK NEXT AFTER:', index);
           render();
         });
-      })();
+      });
     </script>
+
+
   </section>
 
 </Layout>
@@ -196,7 +229,7 @@ console.log('References found:', references.length);
   .hero-content {
     text-align: center;
     color: white;
-    max-width: 700px;
+    max-width: 750px;
     padding: 1.5rem;
     border-radius: 12px;
   }
@@ -205,7 +238,7 @@ console.log('References found:', references.length);
     font-size: clamp(2rem, 6vw, 4rem);
     font-weight: 600;
     line-height: 1.15;
-    margin: 0 0 7.55rem 0;
+    margin: 1rem 0 7.55rem 0;
     color: white !important;
   }
 
@@ -214,7 +247,7 @@ console.log('References found:', references.length);
     font-weight: 300;
     line-height: 1.5;
     color: white;
-    max-width: 650px;
+    max-width: 750px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -263,6 +296,15 @@ console.log('References found:', references.length);
     margin: 0 auto;
     padding: 0 2rem;
   }
+
+  .about-opaque {
+    background: rgba(245, 245, 245, 0.85); /* soft off‑white grey with transparency */
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(4px); /* optional: adds a premium frosted effect */
+  }
+
 
   .about-section h2 {
     font-size: 1.3rem;
@@ -516,6 +558,18 @@ console.log('References found:', references.length);
   .refs-arrow:hover {
     background: #ffffff;
   }
+
+  .refs-text,
+  .refs-date {
+    opacity: 1;
+    transition: opacity 0.35s ease;
+  }
+
+  .refs-text.fade-out,
+  .refs-date.fade-out {
+    opacity: 0;
+  }
+
 
   @media (max-width: 768px) {
     .hero-section {

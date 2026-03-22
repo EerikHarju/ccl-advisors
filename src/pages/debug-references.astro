@@ -1,0 +1,9 @@
+---
+import { getCollection } from 'astro:content';
+
+const refs = await getCollection('references');
+console.log("DEBUG refs:", refs);
+---
+
+<h1>Check your terminal</h1>
+<p>If you see an empty array, Astro is not loading your JSON files.</p>

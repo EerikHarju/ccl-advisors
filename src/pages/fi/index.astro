@@ -1,85 +1,223 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import heroImage from '../../../public/media/IMG_5760.JPG';
+import rawHeroImage from '../../../public/media/IMG_5760.JPG';
+import rawWhyImage from '../../../public/media/IMG_5760.JPG';
+import rawRefsImage from '../../../public/media/IMG_5760.JPG';
+import { getImage } from 'astro:assets';
 
-const title = 'CCL Advisory Oy | Etusivu';
-const description =
-  'Ammatilliset lakiasiantuntijapalvelut transaktioihin, kaupallisiin sopimuksiin, yhtiöoikeuteen ja legal operations -toimintoihin.';
+const prefix = '/en';
+
+const optimizedHero = await getImage({ src: rawHeroImage });
+const optimizedWhy = await getImage({ src: rawWhyImage });
+const optimizedRefs = await getImage({ src: rawRefsImage });
+
+const modules = import.meta.glob('/src/content/references/*.json', { eager: true });
+
+// Unwrap the JSON modules
+const references = Object.values(modules).map(m => m.default);
+
+const safeReferences = references.length > 0
+  ? references
+  : [{ text: 'References coming soon...', date: 'TBD' }];
+
+const title = "CCL Advisory";
+const description = "Bespoke legal and consulting advisory services.";
 ---
 
-<Layout title={title} description={description} lang="fi">
-  <!-- Hero: sliding window with fixed background -->
-  <section
-    class="hero-window"
-    style={`background-image: url(${heroImage.src});`}
-  >
-    <div class="hero-overlay">
-      <h1>CCL Advisory Oy</h1>
-      <p>Riippumaton lakiasiantuntija transaktioihin, kaupallisiin sopimuksiin, yhtiöoikeudellisiin kysymyksiin ja legal operations -kehittämiseen.</p>
+<Layout title={title} description={description} lang="en">
+  <section class="hero-section" style={`background-image: url(${optimizedHero.src});`}>
+    <div class="hero-content">
+      <h1>CCL Advisory</h1>
+      <p>Bespoke legal and consulting advisory services.</p>
+      <a href="#contact" class="hero-cta">Get In Touch</a>
     </div>
   </section>
 
-  <!-- Services synopsis + button -->
-  <section class="home-services-intro">
-    <div class="home-services-text">
-      <h2>Palvelut</h2>
+  <section class="about-section">
+    <div class="about-content about-opaque">
+      <h2>About</h2>
       <p>
-        CCL Advisory tukee yrityksiä ja sijoittajia strategisissa transaktioissa, kaupallisten sopimusten hallinnassa,
-        yhtiöoikeudellisissa asioissa sekä tehokkaiden legal operations -toimintojen rakentamisessa.
+        CCL Advisory is a boutique law and business consulting firm delivering bespoke, 
+        premium legal and business advice for companies and individuals. 
+        We provide top-tier expertise in complex transactions, commercial contracts, 
+        corporate matters, and legal operations. 
       </p>
-    </div>
-
-    <div class="home-services-cta">
-      <a href="/fi/palvelut" class="btn-primary">
-        Katso kaikki palvelut
-      </a>
+      <p>
+        With a dedication to excellence and a focus on each client's unique needs, 
+        we have earned a reputation for outstanding, pragmatic service.
+      </p>
+      <a href="/en/about" class="about-cta">Read More</a>
     </div>
   </section>
 
-  <!-- Service tiles grid -->
-  <section class="home-services-grid">
-    <article class="service-card">
-      <a href="/fi/palvelut/transaktiot" class="service-card-link">
-        <h3>Transaktiot</h3>
-        <div class="service-card-image service-card-image--transactions"></div>
-      </a>
-    </article>
-
-    <article class="service-card">
-      <a href="/fi/palvelut/kaupalliset-sopimukset" class="service-card-link">
-        <h3>Kaupalliset sopimukset</h3>
-        <div class="service-card-image service-card-image--commercial"></div>
-      </a>
-    </article>
-
-    <article class="service-card">
-      <a href="/fi/palvelut/yhtiooikeus" class="service-card-link">
-        <h3>Yhtiöoikeus</h3>
-        <div class="service-card-image service-card-image--corporate"></div>
-      </a>
-    </article>
-
-    <article class="service-card">
-      <a href="/fi/palvelut/legal-operations" class="service-card-link">
-        <h3>Legal Operations</h3>
-        <div class="service-card-image service-card-image--legalops"></div>
-      </a>
-    </article>
+  <section class="why-section" style={`background-image: url(${optimizedWhy.src});`}>
+    <div class="why-content">
+      <h2>Why Choose CCL Advisory?</h2>
+      <div class="why-grid">
+        <div class="why-card">
+          <h3>Tailored Solutions</h3>
+          <p>
+            Each client and transaction is unique. We take on fewer mandates and dedicate full attention to your project, 
+            crafting precise legal strategies that align seamlessly with your business objectives.
+          </p>
+        </div>
+        <div class="why-card">
+          <h3>Legal Excellence</h3>
+          <p>
+            Our focused, hands-on approach allows continuous development of 
+            expertise and the delivery of cutting-edge solutions. We stay ahead of market shifts and regulatory 
+            change to safeguard your interests and strengthen your position.
+          </p>
+        </div>
+        <div class="why-card">
+          <h3>Results-Driven</h3>
+          <p>
+            Your success is our success. Through a results-based approach grounded in trusted, long-term partnerships, 
+            we foster efficiency, consistency, and lasting value. Working closely with each client, we streamline legal 
+            workflows, anticipate challenges, and deliver practical solutions that sustain business growth.
+          </p>
+        </div>
+        
+        <div class="why-card">
+          <h3>Clear Communication</h3>
+          <p>
+            No legalese. We provide straightforward, transparent guidance so you always understand your options, risks, and next steps 
+            in every engagement.
+          </p>
+        </div>
+      </div>
+    </div>
   </section>
+
+  <section class="services-list-section">
+    <div class="services-list-inner">
+      <h2 class="services-list-title">What we do</h2>
+
+      <div class="services-list-items">
+        <a class="service-row" href={`${prefix}/services#transactions`}>
+          <span>Transactions</span>
+          <span class="service-row-icon">+</span>
+        </a>
+
+        <a class="service-row" href={`${prefix}/services#commercial-contracts`}>
+          <span>Commercial Contracts</span>
+          <span class="service-row-icon">+</span>
+        </a>
+
+        <a class="service-row" href={`${prefix}/services#corporate`}>
+          <span>Corporate</span>
+          <span class="service-row-icon">+</span>
+        </a>
+
+        <a class="service-row" href={`${prefix}/services#legal-operations`}>
+          <span>Legal Operations</span>
+          <span class="service-row-icon">+</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="references" class="refs-section" style={`background-image: url(${optimizedRefs.src});`}>
+    <script
+      type="application/json"
+      id="refs-data"
+      set:html={JSON.stringify(safeReferences)}
+    ></script>
+    <div class="refs-overlay"></div>
+    <div class="refs-inner">
+      <h2 class="refs-title">Latest references</h2>
+
+      <div class="refs-slide">
+        <p class="refs-text" id="refs-text">
+          {safeReferences[0].text}
+        </p>
+        <p class="refs-date" id="refs-date">
+          {safeReferences[0].date}
+        </p>
+      </div>
+
+      <button class="refs-arrow refs-arrow-left" type="button" aria-label="Previous reference" id="refs-prev">
+        ←
+      </button>
+      <button class="refs-arrow refs-arrow-right" type="button" aria-label="Next reference" id="refs-next">
+        →
+      </button>
+    </div>
+
+    <script is:inline>
+      document.addEventListener("DOMContentLoaded", () => {
+        const raw = document.getElementById("refs-data").textContent;
+        console.log('RAW JSON FROM SCRIPT TAG:', raw, 'TYPE:', typeof raw);
+
+        let items;
+        try {
+          items = JSON.parse(raw);
+          console.log('PARSED ITEMS:', items, 'TYPE:', typeof items, 'LENGTH:', items.length);
+        } catch (e) {
+          console.error('JSON PARSE FAILED:', e);
+          return;
+        }
+
+        let index = 0;
+
+        const textEl = document.getElementById('refs-text');
+        const dateEl = document.getElementById('refs-date');
+        const prevBtn = document.getElementById('refs-prev');
+        const nextBtn = document.getElementById('refs-next');
+
+        console.log('ELEMENTS:', { textEl, dateEl, prevBtn, nextBtn });
+
+        function render() {
+          const item = items[index];
+
+          // Fade out
+          textEl.classList.add('fade-out');
+          dateEl.classList.add('fade-out');
+
+          setTimeout(() => {
+            // Update content while faded out
+            textEl.textContent = item.text;
+            dateEl.textContent = item.date;
+
+            // Fade back in
+            textEl.classList.remove('fade-out');
+            dateEl.classList.remove('fade-out');
+          }, 200); // matches half the CSS transition
+        }
+
+        render();
+
+        prevBtn.addEventListener('click', () => {
+          console.log('CLICK PREV BEFORE:', index);
+          index = (index - 1 + items.length) % items.length;
+          console.log('CLICK PREV AFTER:', index);
+          render();
+        });
+
+        nextBtn.addEventListener('click', () => {
+          console.log('CLICK NEXT BEFORE:', index);
+          index = (index + 1) % items.length;
+          console.log('CLICK NEXT AFTER:', index);
+          render();
+        });
+      });
+    </script>
+
+
+  </section>
+
 </Layout>
 
 <style>
-  /* Same CSS as EN version */
-
-  .hero-window {
+  .hero-section {
     position: relative;
     width: 100vw;
-    margin-left: 50%;
-    transform: translateX(-50%);
-    height: 60vh;
-    min-height: 360px;
+    left: 50%;
+    margin-left: -50vw;
+    height: 100vh;
+    min-height: 600px;
     background-position: center center;
-    background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
     display: flex;
@@ -88,137 +226,401 @@ const description =
     overflow: hidden;
   }
 
-  .hero-overlay {
+  .hero-content {
+    text-align: center;
+    color: white;
+    max-width: 750px;
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .hero-section h1 {
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 600;
+    line-height: 1.15;
+    margin: 1rem 0 7.55rem 0;
+    color: white !important;
+  }
+
+  .hero-section p {
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-weight: 300;
+    line-height: 1.5;
+    color: white;
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-cta,
+  .about-cta {
+    width: 240px;
+    height: 62px;
+    line-height: 58px;
+    padding: 0;
+    display: block;
+    text-align: center;
+    border-radius: 40px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: all 300ms ease;
+    text-decoration: none;
+  }
+
+  .hero-cta {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    color: white;
+    margin: 1rem auto 2rem auto;
+  }
+
+  .hero-cta:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+  }
+
+  .about-section {
+    padding: 6rem 0;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-content {
+    max-width: 750px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .about-opaque {
+    background: rgba(245, 245, 245, 0.85); /* soft off‑white grey with transparency */
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(4px); /* optional: adds a premium frosted effect */
+  }
+
+
+  .about-section h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0 0 1.5rem 0;
+    text-align: left;
+    color: rgb(var(--black));
+  }
+
+  .about-section p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0 0 1.5rem 0;
+    color: rgb(var(--gray-dark));
+    text-align: left;
+    max-width: 650px;
+  }
+
+  .about-cta {
+    background: transparent;
+    border: 2px solid rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, 0.75);
+    margin: 2rem auto 0 auto;
+  }
+
+  .about-cta:hover {
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.75);
+    transform: translateY(-2px);
+  }
+
+  .why-section {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    padding: 4rem 0;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .why-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
     position: relative;
     z-index: 1;
-    text-align: center;
-    color: #ffffff;
-    padding: 2.5rem 1.75rem;
-    max-width: 880px;
-    background: rgba(0, 0, 0, 0.35);
-    border-radius: 10px;
   }
 
-  .hero-overlay h1 {
-    font-size: clamp(2.3rem, 3.4vw, 3rem);
-    margin-bottom: 0.75rem;
+  .why-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.52);
+    z-index: 0;
   }
 
-  .hero-overlay p {
-    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
-    margin: 0;
+  .why-section h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0 0 3rem 0;
+    text-align: left;
+    color: rgb(var(--black));
+    position: relative;
   }
 
-  @media (max-width: 768px) {
-    .hero-window {
-      background-attachment: scroll;
-      height: 55vh;
-    }
-  }
-
-  .home-services-intro {
-    max-width: 960px;
-    margin: 3.5rem auto 2.5rem;
-    padding-inline: 1.5rem;
-    text-align: center;
-  }
-
-  .home-services-text h2 {
-    font-size: 1.8rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .home-services-text p {
-    margin: 0;
-    font-size: 1rem;
-    line-height: 1.6;
-  }
-
-  .home-services-cta {
-    margin-top: 1.75rem;
-  }
-
-  .btn-primary {
-    display: inline-block;
-    padding: 0.9rem 2.8rem;
-    border-radius: 999px;
-    background: #1c2230;
-    color: #ffffff;
-    text-decoration: none;
-    letter-spacing: 0.12em;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-  }
-
-  .btn-primary:hover {
-    background: #262e40;
-  }
-
-  .home-services-grid {
-    max-width: 1120px;
-    margin: 0 auto 4rem;
-    padding-inline: 1.5rem;
+  .why-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    position: relative;
   }
 
-  @media (max-width: 960px) {
-    .home-services-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .why-card {
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
 
-  @media (max-width: 600px) {
-    .home-services-grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
+  .why-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    color: rgb(var(--black));
   }
 
-  .service-card {
-    list-style: none;
-  }
-
-  .service-card-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .service-card h3 {
-    font-size: 1.05rem;
-    margin-bottom: 0.5rem;
+  .why-card p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0;
+    color: rgb(var(--gray-dark));
     text-align: left;
   }
 
-  .service-card-image {
-    height: 180px;
-    border-radius: 8px;
-    background-size: cover;
+  .services-list-section {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    padding: 6rem 0;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .services-list-inner {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr);
+    gap: 4rem;
+  }
+
+  .services-list-title {
+    font-size: clamp(2.6rem, 4vw, 3.2rem);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: #111111;
+    margin: 0;
+    align-self: flex-start;
+  }
+
+  .services-list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-self: center;
+  }
+
+  .service-row {
+    width: 100%;
+    padding: 0.75rem 0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #111111;
+    color: #111111;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: clamp(1.3rem, 2.3vw, 1.6rem);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-align: left;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .service-row-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+  }
+
+  .service-row:hover {
+    opacity: 0.8;
+  }
+
+  /* References carousel */
+  .refs-section {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    height: 100vh;
+    min-height: 600px;
     background-position: center center;
-    background-repeat: no-repeat;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-    transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0;
   }
 
-  .service-card-link:hover .service-card-image {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  .refs-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 0;
   }
 
-  .service-card-image--transactions {
-    background-image: linear-gradient(135deg, #0f4c81, #1d78c1);
+  .refs-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    width: 100%;
+    padding: 0 3rem;
+    text-align: center;
+    color: #ffffff;
+    margin: 0 auto;
   }
 
-  .service-card-image--commercial {
-    background-image: linear-gradient(135deg, #4b3f72, #9f7aea);
+  .refs-title {
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    font-weight: 500;
+    margin-bottom: 3rem;
+    color: #ffffff;
   }
 
-  .service-card-image--corporate {
-    background-image: linear-gradient(135deg, #184d47, #2a9d8f);
+  .refs-slide {
+    max-width: 720px;
+    margin: 0 auto;
   }
 
-  .service-card-image--legalops {
-    background-image: linear-gradient(135deg, #5a4b2b, #b8860b);
+  .refs-text {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .refs-date {
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .refs-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+
+  .refs-arrow-left {
+    left: 0;
+  }
+
+  .refs-arrow-right {
+    right: 0;
+  }
+
+  .refs-arrow:hover {
+    background: #ffffff;
+  }
+
+  .refs-text,
+  .refs-date {
+    opacity: 1;
+    transition: opacity 0.35s ease;
+  }
+
+  .refs-text.fade-out,
+  .refs-date.fade-out {
+    opacity: 0;
+  }
+
+
+  @media (max-width: 768px) {
+    .hero-section {
+      background-attachment: scroll;
+      height: 100vh;
+      background-position: center 40%;
+    }
+
+    .hero-content {
+      padding: 1.25rem;
+    }
+
+    .about-section {
+      padding: 4rem 1.5rem;
+    }
+
+    .why-section {
+      padding: 3rem 1rem;
+      background-attachment: scroll;
+    }
+
+    .why-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .services-list-inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .services-list-title {
+      text-align: left;
+    }
+
+    .refs-section {
+      background-attachment: scroll;
+      padding: 4rem 1.5rem;
+    }
+
+    .refs-inner {
+      padding: 0 1.5rem;
+      max-width: 100%;
+    }
+
+    .refs-arrow-left {
+      left: 1rem;
+    }
+
+    .refs-arrow-right {
+      right: 1rem;
+    }
   }
 </style>
