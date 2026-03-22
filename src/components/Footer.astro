@@ -52,7 +52,7 @@ const today = new Date();
     
   </div>
 
-    <script is:inline>
+  <script is:inline>
     const form = document.getElementById('footer-contact-form');
     const statusEl = document.getElementById('footer-contact-status');
     const submitBtn = document.getElementById('footer-contact-submit');
@@ -66,7 +66,8 @@ const today = new Date();
         const formData = new FormData(form);
 
         try {
-          const response = await fetch('/api/contact', {
+          // Always hit the correct API route, regardless of /en/ or other prefixes
+          const response = await fetch(`${window.location.origin}/api/contact`, {
             method: 'POST',
             body: formData,
           });
@@ -93,7 +94,6 @@ const today = new Date();
       });
     }
   </script>
-
 </footer>
 
 <style>
