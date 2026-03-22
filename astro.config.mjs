@@ -3,8 +3,8 @@ import cloudflare from "@astrojs/cloudflare";
 
 export default defineConfig({
   site: "https://ccladvisors.com",
-  output: "static",
-  adapter: cloudflare(),
+  output: "server", // ← THIS ENABLES API ROUTES
+  adapter: cloudflare(), // ← REQUIRED FOR CLOUDFLARE FUNCTIONS
   i18n: {
     defaultLocale: "fi",
     locales: ["en", "fi"],
