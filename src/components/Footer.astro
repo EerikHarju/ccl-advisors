@@ -52,7 +52,7 @@ const today = new Date();
     
   </div>
 
-  <script is:inline>
+    <script is:inline>
     const form = document.getElementById('footer-contact-form');
     const statusEl = document.getElementById('footer-contact-status');
     const submitBtn = document.getElementById('footer-contact-submit');
@@ -71,7 +71,9 @@ const today = new Date();
             body: formData,
           });
 
-          if (!response.ok) {
+          const result = await response.json();
+
+          if (!response.ok || !result.ok) {
             throw new Error('Request failed');
           }
 
@@ -91,6 +93,7 @@ const today = new Date();
       });
     }
   </script>
+
 </footer>
 
 <style>
