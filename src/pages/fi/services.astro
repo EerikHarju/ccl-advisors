@@ -16,7 +16,7 @@ const intro =
 
 <Layout title={title} description={description} lang="en">
 
-  <!-- HERO SECTION -->
+  <!-- HERO SECTION (same as About) -->
   <section 
     class="hero-section" 
     style={`background-image: url(${optimizedHero.src});`}
@@ -34,11 +34,6 @@ const intro =
       <p class="service-description">
         We support clients through mergers, acquisitions, divestments, financing rounds, and strategic transactions with clear, business‑driven legal guidance.
       </p>
-
-      <div class="service-icon-wrapper">
-        <img src="/media/handshake.png" alt="Transactions icon" class="service-icon" />
-        <span class="credit-number">¹</span>
-      </div>
     </div>
   </section>
 
@@ -48,11 +43,6 @@ const intro =
       <p class="service-description">
         We draft, negotiate, and optimize commercial agreements that protect your interests and enable smooth business operations.
       </p>
-
-      <div class="service-icon-wrapper">
-        <img src="/media/contract.png" alt="Commercial contracts icon" class="service-icon" />
-        <span class="credit-number">²</span>
-      </div>
     </div>
   </section>
 
@@ -62,11 +52,6 @@ const intro =
       <p class="service-description">
         We advise on corporate governance, board matters, shareholder issues, and compliance to ensure your company operates with clarity and confidence.
       </p>
-
-      <div class="service-icon-wrapper">
-        <img src="/media/office-building.png" alt="Corporate icon" class="service-icon" />
-        <span class="credit-number">³</span>
-      </div>
     </div>
   </section>
 
@@ -76,29 +61,13 @@ const intro =
       <p class="service-description">
         We help organizations modernize their legal function through process design, tooling, automation, and operational excellence.
       </p>
-
-      <div class="service-icon-wrapper">
-        <img src="/media/kanban.png" alt="Legal operations icon" class="service-icon" />
-        <span class="credit-number">⁴</span>
-      </div>
     </div>
-  </section>
-
-  <!-- CREDITS -->
-  <section class="credits">
-    <p>
-      <strong>Credits:</strong>
-      <a href="https://www.flaticon.com/free-icons/partnership-handshake">¹</a>
-      <a href="https://www.flaticon.com/free-icons/contract">²</a>
-      <a href="https://www.flaticon.com/free-icons/company">³</a>
-      <a href="https://www.flaticon.com/free-icons/kanban">⁴</a>
-    </p>
   </section>
 
 </Layout>
 
 <style>
-  /* HERO SECTION */
+  /* --- HERO SECTION (identical to About page) --- */
   .hero-section {
     position: relative;
     width: 100vw;
@@ -115,10 +84,6 @@ const intro =
     overflow: hidden;
   }
 
-  .hero-section h1 {
-    color: white !important;
-  }
-
   .hero-content {
     text-align: center;
     color: white;
@@ -127,11 +92,33 @@ const intro =
     border-radius: 12px;
   }
 
-  /* SERVICE SECTIONS */
+  .hero-section h1 {
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 600;
+    line-height: 1.15;
+    margin: 1rem 0 2rem 0;
+    color: white !important;
+  }
+
+  .hero-section p {
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-weight: 300;
+    line-height: 1.5;
+    color: white;
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* --- SERVICE SECTIONS --- */
   .service-section {
     padding: 100px 0;
     background-color: white;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .service-section:last-of-type {
+    border-bottom: none;
   }
 
   .service-inner {
@@ -148,50 +135,29 @@ const intro =
     padding-bottom: 10px;
   }
 
+  .service-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: #000;
+    opacity: 0.15;
+  }
+
   .service-description {
     font-size: 1.1rem;
     line-height: 1.6;
     color: #444;
     max-width: 700px;
-    margin-bottom: 25px;
   }
 
-  /* ICONS */
-  .service-icon-wrapper {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin-top: 30px;
-  }
-
-  .service-icon {
-    width: 240px;   /* 4× larger */
-    height: auto;
-    opacity: 0.95;
-  }
-
-  .credit-number {
-    font-size: 1.2rem;
-    opacity: 0.6;
-    position: relative;
-    top: -12px;
-  }
-
-  /* CREDITS */
-  .credits {
-    text-align: center;
-    padding: 40px 0;
-    font-size: 0.9rem;
-    color: #666;
-  }
-
-  .credits a {
-    margin: 0 6px;
-    text-decoration: none;
-    color: #666;
-  }
-
-  .credits a:hover {
-    text-decoration: underline;
+  @media (max-width: 768px) {
+    .hero-section {
+      background-attachment: scroll;
+      height: 100vh;
+      background-position: center 40%;
+    }
   }
 </style>
