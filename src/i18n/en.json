@@ -1,0 +1,68 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "references": "References",
+    "contact": "Contact",
+    "serviceItems": {
+      "transactions": "Transactions",
+      "commercial": "Commercial Contracts",
+      "corporate": "Corporate",
+      "legalops": "Legal Operations"
+    }
+  },
+  "home": {
+    "heroHeading": "CCL Advisory",
+    "heroSubheading": "Bespoke legal and consulting advisory services for companies and investors.",
+    "heroCta": "Get In Touch",
+    "aboutHeading": "About",
+    "aboutIntro": "CCL Advisory is a boutique law and business consulting firm delivering premium legal advice for companies and individuals.",
+    "aboutText": "We provide top-tier expertise in complex transactions, commercial contracts, corporate matters and legal operations.",
+    "whyHeading": "Why Choose CCL Advisory?",
+    "whyCards": [
+      {
+        "title": "Tailored Solutions",
+        "text": "Each client and transaction is unique. We take on fewer mandates and dedicate full attention to your project."
+      },
+      {
+        "title": "Legal Excellence",
+        "text": "A focused, hands-on approach enables us to deliver sharp and commercially sound legal advice."
+      },
+      {
+        "title": "Results-Driven",
+        "text": "We build long-term partnerships, streamline workflows, and keep execution aligned with business goals."
+      },
+      {
+        "title": "Clear Communication",
+        "text": "We avoid legalese and explain your options, risks and next steps with clarity."
+      }
+    ]
+  },
+  "about": {
+    "heroTitle": "CCL Advisory",
+    "heroSubtitle": "Bespoke legal and consulting advisory services.",
+    "heroCta": "Get In Touch",
+    "title": "About CCL Advisory",
+    "intro1": "CCL Advisory is a boutique law and business consulting firm delivering bespoke, premium solutions in complex transactions, corporate governance and legal operations.",
+    "intro2": "Our commitment to excellence and cross-border experience ensures clients receive commercially astute, high-calibre advisory services.",
+    "founderCopy1": "CCL Advisory was founded by Mikko Harju on the principle that focused, hands-on legal support — leveraging decades of international deal-making — serves clients best.",
+    "founderCopy2": "With over 20 years living and working across Asia, Mikko brings international experience from public companies and top-tier law firms."
+  },
+  "services": {
+    "heroHeading": "Legal advisory tailored to high-growth companies and strategic investors.",
+    "heroIntro": "Modern legal counsel for transactions, commercial agreements, corporate governance and legal operations — grounded in business outcomes and risk discipline.",
+    "highlightHeading": "Why clients choose CCL Advisory",
+    "highlightCopy": "We work with a limited number of clients to deliver fast, senior-led advice, clear documentation, and a practical legal framework that supports your transaction and growth agenda.",
+    "highlightPoints": [
+      "Priority access to senior counsel and trusted deal execution.",
+      "Commercial clarity for founders, investors and corporate boards."
+    ]
+  },
+  "footer": {
+    "contactPrompt": "Please contact us:",
+    "email": "Email",
+    "phone": "Phone",
+    "linkedin": "LinkedIn"
+  }
+}

@@ -1,20 +1,35 @@
 ---
+import { Astro } from 'astro';
+import { translations } from '../i18n/index.ts';
+
+const lang = Astro.url.pathname.startsWith('/fi') ? 'fi' : 'en';
+const t = (key: string) => {
+  const keys = key.split('.');
+  let result: any = translations[lang];
+
+  for (const segment of keys) {
+    result = result?.[segment];
+    if (result === undefined) return key;
+  }
+
+  return result;
+};
+
 const today = new Date();
 ---
 
 <footer class="contact-footer">
   <div class="contact-left" id="contact">
-    <h2>Please <span class="accent">contact</span> us:</h2>
+    <h2>{t('footer.contactPrompt')}</h2>
 
     <div class="contact-details">
-      <p><strong>Email:</strong> <a href="mailto:mikkoharju@ccladvisors.com">mikkoharju@ccladvisors.com</a></p>
-      <p><strong>Phone:</strong> <a href="tel:+358505539293">+358 50 553 9293</a></p>
-      <p><strong>LinkedIn:</strong> 
+      <p><strong>{t('footer.email')}:</strong> <a href="mailto:mikkoharju@ccladvisors.com">mikkoharju@ccladvisors.com</a></p>
+      <p><strong>{t('footer.phone')}:</strong> <a href="tel:+358505539293">+358 50 553 9293</a></p>
+      <p><strong>{t('footer.linkedin')}:</strong>
         <a href="https://www.linkedin.com/in/mikko-harju-38a39b4/" target="_blank" rel="noopener noreferrer">
           Mikko Harju
         </a>
       </p>
-      
     </div>
   </div>
 

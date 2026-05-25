@@ -1,32 +1,30 @@
 ---
 import HeaderLink from './HeaderLink.astro';
 import { Astro } from 'astro';
+import { translations } from '../i18n/index.ts';
 
 const lang = Astro.url.pathname.startsWith('/fi') ? 'fi' : 'en';
 const toggleLang = lang === 'fi' ? 'en' : 'fi';
-const togglePath = Astro.url.pathname.replace(`/${lang}`, `/${toggleLang}`);
+const currentPath = Astro.url.pathname.replace(/^\/(fi|en)/, '') || '/';
+const togglePath = `/${toggleLang}${currentPath}`;
 const prefix = `/${lang}`;
 
-const translations = {
-  en: { home: 'Home', about: 'About', services: 'Services', references: 'References', contact: 'Contact', 
-        serviceItems: { transactions: 'Transactions', commercial: 'Commercial Contracts', corporate: 'Corporate', legalops: 'Legal Operations' } },
-  fi: { home: 'Etusivu', about: 'Yritys', services: 'Palvelut', references: 'Referenssit', contact: 'Yhteystiedot', 
-        serviceItems: { transactions: 'Kaupankäynti', commercial: 'Kaupalliset sopimukset', corporate: 'Yhtiöoikeus', legalops: 'Oikeudelliset toiminnot' } }
-};
-
 const services = [
-  { key: 'serviceItems.transactions', href: '/services#transactions' },
-  { key: 'serviceItems.commercial', href: '/services#commercial-contracts' },
-  { key: 'serviceItems.corporate', href: '/services#corporate' },
-  { key: 'serviceItems.legalops', href: '/services#legal-operations' }
+  { key: 'nav.serviceItems.transactions', href: '/services#transactions' },
+  { key: 'nav.serviceItems.commercial', href: '/services#commercial-contracts' },
+  { key: 'nav.serviceItems.corporate', href: '/services#corporate' },
+  { key: 'nav.serviceItems.legalops', href: '/services#legal-operations' }
 ];
 
 const t = (key: string) => {
-  let result = translations[lang];
-  for (const k of key.split('.')) {
-    result = result?.[k];
+  const keys = key.split('.');
+  let result: any = translations[lang];
+
+  for (const segment of keys) {
+    result = result?.[segment];
     if (result === undefined) return key;
   }
+
   return result;
 };
 ---
@@ -38,18 +36,18 @@ const t = (key: string) => {
     </a>
 
     <ul class="nav-list desktop-only">
-      <li><HeaderLink href={`${prefix}/`}>{t('home')}</HeaderLink></li>
-      <li><HeaderLink href={`${prefix}/about`}>{t('about')}</HeaderLink></li>
+      <li><HeaderLink href={`${prefix}/`}>{t('nav.home')}</HeaderLink></li>
+      <li><HeaderLink href={`${prefix}/about`}>{t('nav.about')}</HeaderLink></li>
       <li class="nav-item dropdown">
         <HeaderLink href={`${prefix}/services`} class="services-link">
-          <span class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">{t('services')}</span>
+          <span class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">{t('nav.services')}</span>
         </HeaderLink>
-        <ul class="dropdown-menu">
-          {services.map(s => <li><HeaderLink href={`${prefix}${s.href}`}>{t(s.key)}</HeaderLink></li>)}
+        <ul class="dropdown-menu" role="menu">
+          {services.map(s => <li><HeaderLink role="menuitem" href={`${prefix}${s.href}`}>{t(s.key)}</HeaderLink></li>)}
         </ul>
       </li>
-      <HeaderLink href={`${prefix}/#references`}>{t('references')}</HeaderLink>
-      <li><HeaderLink href="#contact">{t('contact')}</HeaderLink></li>
+      <HeaderLink href={`${prefix}/#references`}>{t('nav.references')}</HeaderLink>
+      <li><HeaderLink href="#contact">{t('nav.contact')}</HeaderLink></li>
     </ul>
 
     <div class="nav-right">
@@ -66,16 +64,16 @@ const t = (key: string) => {
   <div class="overlay mobile-only" id="overlay"></div>
   <aside class="sidebar mobile-only" id="sidebar">
     <nav class="sidebar-nav">
-      <HeaderLink href={`${prefix}/`}>{t('home')}</HeaderLink>
-      <HeaderLink href={`${prefix}/about`}>{t('about')}</HeaderLink>
-      <HeaderLink href={`${prefix}/services`}>{t('services')}</HeaderLink>
+      <HeaderLink href={`${prefix}/`}>{t('nav.home')}</HeaderLink>
+      <HeaderLink href={`${prefix}/about`}>{t('nav.about')}</HeaderLink>
+      <HeaderLink href={`${prefix}/services`}>{t('nav.services')}</HeaderLink>
       <div class="sidebar-services-list">
         {services.map(s => (
           <HeaderLink href={`${prefix}${s.href}`}>{t(s.key)}</HeaderLink>
         ))}
       </div>
-      <HeaderLink href={`${prefix}/#references`}>{t('references')}</HeaderLink>
-      <HeaderLink href="#contact">{t('contact')}</HeaderLink>
+      <HeaderLink href={`${prefix}/#references`}>{t('nav.references')}</HeaderLink>
+      <HeaderLink href="#contact">{t('nav.contact')}</HeaderLink>
       <button class="lang-toggle-mobile" type="button" onclick={`window.location.href='${togglePath}'`}
               aria-label={lang === 'en' ? 'Switch to Finnish' : 'Vaihda kieli englanniksi'}>
         {toggleLang.toUpperCase()}
@@ -184,7 +182,6 @@ const t = (key: string) => {
     list-style: none;
     margin: 0;
     padding: .4rem 0;
-    border-radius: .5rem;
     box-shadow: 0 18px 45px rgba(15, 23, 42, .12);
     opacity: 0;
     visibility: hidden;
@@ -224,7 +221,6 @@ const t = (key: string) => {
     height: 3px;
     background: var(--color-text);
     margin: 5px 0;
-    border-radius: 2px;
     transition: all .3s ease;
   }
 

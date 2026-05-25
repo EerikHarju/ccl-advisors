@@ -231,7 +231,6 @@ const description = "Bespoke legal and consulting advisory services.";
     color: white;
     max-width: 750px;
     padding: 1.5rem;
-    border-radius: 12px;
   }
 
   .hero-section h1 {
@@ -284,25 +283,24 @@ const description = "Bespoke legal and consulting advisory services.";
 
   .about-section {
     padding: 6rem 0;
-    background: white;
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .about-content {
-    max-width: 750px;
+    max-width: min(900px, 100%);
     width: 100%;
     margin: 0 auto;
-    padding: 0 2rem;
+    background: #ffffff;
+    box-shadow: 0 28px 100px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
   }
 
   .about-opaque {
-    background: rgba(245, 245, 245, 0.85); /* soft off‑white grey with transparency */
-    padding: 2.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-    backdrop-filter: blur(4px); /* optional: adds a premium frosted effect */
+    background: transparent;
+    padding: clamp(2rem, 4vw, 3rem);
   }
 
 
@@ -387,7 +385,6 @@ const description = "Bespoke legal and consulting advisory services.";
   .why-card {
     padding: 2rem;
     background: rgba(255, 255, 255, 0.85);
-    border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
 

@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import rawHeroImage from '../../../public/media/IMG_5760.JPG';
-import rawWhyImage from '../../../public/media/001381380001.jpg';
+import rawWhyImage from '../../../public/media/IMG_5760.JPG';
 
 import { getImage } from 'astro:assets';
 import { getCollection } from 'astro:content';
@@ -9,53 +9,44 @@ import { getCollection } from 'astro:content';
 const optimizedHero = await getImage({ src: rawHeroImage });
 const optimizedWhy = await getImage({ src: rawWhyImage });
 
-const title = 'CCL Advisory | About';
+const title = 'CCL Advisory | Tietoa meistä';
 const description =
-  'Professional legal advisory services for complex transactions, commercial contracts, corporate matters and legal operations.';
+  'Yksilöllistä ja korkealaatuista lakineuvontaa kompleksisiin transaktioihin, sopimuksiin ja yritysoikeuteen.';
 
 
 ---
 
-<Layout title={title} description={description} lang="en">
+<Layout title={title} description={description} lang="fi">
   <section class="hero-section" style={`background-image: url(${optimizedHero.src});`}>
     <div class="hero-content">
       <h1>CCL Advisory</h1>
-      <p>Bespoke legal and consulting advisory services.</p>
-      <a href="/en/contact" class="hero-cta">Get In Touch</a>
+      <p>Räätälöityjä lakipalveluja ja liiketoiminnallista neuvontaa.</p>
+      <a href="#contact" class="hero-cta">Ota yhteyttä</a>
     </div>
   </section>
 
   <section class="why-section">
     <div class="why-content">
-      <h2>About CCL Advisory</h2>
+      <h2>Tietoa CCL Advisorystä</h2>
       <div class="why-grid">
         <div class="why-card">
           <p>
-            Welcome to CCL Advisory, a boutique law and business consulting firm delivering bespoke, 
-            premium solutions in complex transactions, corporate governance, and legal operations. 
-            Our commitment to excellence and deep cross-border expertise ensures clients receive commercially 
-            astute, high-caliber advisory services.​
-</p>
-<p>
-CCL Advisory was founded by Mikko Harju on the principle that focused, 
-hands-on legal support — leveraging decades of international deal-making — serves clients best. 
-With over 20 years living and working across Asia (China, India, Hong Kong), Mikko brings 
-unparalleled international experience from publically listed companies and top-tier law firms.
-
+            CCL Advisory on erikoistunut lakitoimisto ja liiketoiminnan neuvontatalo, joka tarjoaa räätälöityjä ratkaisuja transaktioihin, yhtiöoikeuteen ja oikeudelliseen operointiin.
+            Osaamisemme keskittyy laatuun, asiakaslähtöisyyteen ja liiketaloudelliseen näkemykseen.
           </p>
-          
+          <p>
+            Yrityksen perusti Mikko Harju, ja sen toimintaperiaate perustuu tarkkaan, asiakaskohtaiseen tuen tarjoamiseen.
+            Mikolla on yli 20 vuoden kokemus kansainvälisistä järjestelyistä ja juridisesta neuvonnasta Euroopassa ja Aasiassa.
+          </p>
         </div>
         <div class="why-card">
           <p>
-
-Mikko's track record spans advising Nordic and international clients on M&A, joint ventures, 
-corporate structuring, and commercial contracts in highly competitive markets. 
-
-Holding an LL.M. from the University of Helsinki and a post-graduate Master’s in EU Competition Law 
-from The University of Amsterdam, Mikko combines technical legal depth with business acumen from legal and business leadership roles. 
-Most recently prior to establishing CCL Advisory, Mikko advised both domestic and international clients at KPMG M&A Legal team in Helsinki.
-
-To discuss your transaction or corporate needs, please get in touch. Learn more about Mikko’s background on LinkedIn.​
+            Mikon kokemus kattaa M&A:n, yritysjärjestelyt, yhteisyritykset, yhtiörakenteet ja kaupalliset sopimukset.
+            Hän yhdistää tarkan oikeudellisen osaamisen ja käytännön liiketoimintaosaamisen varmistaakseen, että neuvonta on sekä strategista että toteuttamiskelpoista.
+          </p>
+          <p>
+            Ennen CCL Advisoryn perustamista Mikko työskenteli muun muassa KPMG:n M&A Legal -tiimissä Helsingissä.
+            Ota yhteyttä, jos haluat keskustella yrityksesi transaktioista, sopimuksista tai yhtiöjärjestelyistä.
           </p>
         </div>
       </div>
@@ -86,7 +77,6 @@ To discuss your transaction or corporate needs, please get in touch. Learn more 
     color: white;
     max-width: 750px;
     padding: 1.5rem;
-    border-radius: 12px;
   }
 
   .hero-section h1 {
@@ -188,7 +178,6 @@ To discuss your transaction or corporate needs, please get in touch. Learn more 
   .why-card {
     padding: 2rem;
     background: rgba(255, 255, 255, 0.85);
-    border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
 

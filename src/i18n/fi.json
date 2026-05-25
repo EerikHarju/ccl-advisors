@@ -1,0 +1,68 @@
+{
+  "nav": {
+    "home": "Etusivu",
+    "about": "Yritys",
+    "services": "Palvelut",
+    "references": "Referenssit",
+    "contact": "Yhteystiedot",
+    "serviceItems": {
+      "transactions": "Kaupankäynti",
+      "commercial": "Kaupalliset sopimukset",
+      "corporate": "Yhtiöoikeus",
+      "legalops": "Oikeudelliset toiminnot"
+    }
+  },
+  "home": {
+    "heroHeading": "CCL Advisory",
+    "heroSubheading": "Räätälöityä juridista ja liiketoiminnallista neuvontaa yrityksille ja sijoittajille.",
+    "heroCta": "Ota yhteyttä",
+    "aboutHeading": "Yritys",
+    "aboutIntro": "CCL Advisory on boutique-lakitoimisto, joka tarjoaa korkeatasoista juridista neuvontaa yrityksille ja yksityishenkilöille.",
+    "aboutText": "Tarjoamme huippuosaamista monimutkaisissa transaktioissa, kaupallisissa sopimuksissa, yhtiöoikeudessa ja oikeudellisessa operoinnissa.",
+    "whyHeading": "Miksi valita CCL Advisory?",
+    "whyCards": [
+      {
+        "title": "Räätälöidyt ratkaisut",
+        "text": "Jokainen asiakas ja toimeksianto on ainutlaatuinen. Omistamme täyden huomion projekteillesi."
+      },
+      {
+        "title": "Oikeudellinen huippuosaaminen",
+        "text": "Tarkka ja liiketaloudellinen lähestymistapa mahdollistaa vahvan juridisen neuvonnan."
+      },
+      {
+        "title": "Tuloshakuinen palvelu",
+        "text": "Rakennamme pitkäjänteisiä kumppanuuksia, virtaviivaistamme prosesseja ja pidämme toimeksiannot liiketoiminnan tavoitteissa."
+      },
+      {
+        "title": "Selkeä viestintä",
+        "text": "Vältymme oikeudiskielestä ja selitämme vaihtoehdot, riskit ja seuraavat askeleet ymmärrettävästi."
+      }
+    ]
+  },
+  "about": {
+    "heroTitle": "CCL Advisory",
+    "heroSubtitle": "Räätälöityä juridista ja liiketoiminnallista neuvontaa.",
+    "heroCta": "Ota yhteyttä",
+    "title": "Tietoa CCL Advisorysta",
+    "intro1": "CCL Advisory on boutique-lakitoimisto, joka tarjoaa räätälöityjä, korkeatasoisia ratkaisuja monimutkaisiin transaktioihin, yhtiöhallintoon ja oikeudelliseen operointiin.",
+    "intro2": "Sitoutumisemme laatuun ja kansainväliseen kokemukseen varmistavat kaupallisesti vahvan juridisen tuen.",
+    "founderCopy1": "CCL Advisoryn perusti Mikko Harju, joka uskoo siihen, että fokusoitu, käytännönläheinen juridinen tuki palvelee parhaiten asiakasta.",
+    "founderCopy2": "Yli 20 vuoden kokemus Aasiasta, julkisen sektorin yrityksistä ja huippujuridiikasta tuo yritykselle ainutlaatuista näkökulmaa."
+  },
+  "services": {
+    "heroHeading": "Oikeudellista neuvontaa kasvaville yrityksille ja strategisille sijoittajille.",
+    "heroIntro": "Modernia juridista tukea transaktioihin, sopimuksiin, yhtiöoikeuteen ja oikeudelliseen operointiin — liiketuloksia tukeva lähestymistapa.",
+    "highlightHeading": "Miksi asiakkaat valitsevat CCL Advisoryn",
+    "highlightCopy": "Työskentelemme rajatun asiakasmäärän kanssa, jotta voimme tarjota pikaista, johtotason neuvontaa, selkeät dokumentit ja käytännöllisen juridisen puitteen kasvulle.",
+    "highlightPoints": [
+      "Prioriteetti vanhaan, senioritason neuvontaan ja luotettavaan toimeenpanoon.",
+      "Kaupallinen selkeys perustajille, sijoittajille ja hallituksille."
+    ]
+  },
+  "footer": {
+    "contactPrompt": "Ota meihin yhteyttä:",
+    "email": "Sähköposti",
+    "phone": "Puhelin",
+    "linkedin": "LinkedIn"
+  }
+}

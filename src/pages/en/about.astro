@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import rawHeroImage from '../../../public/media/IMG_5760.JPG';
-import rawWhyImage from '../../../public/media/001381380001.jpg';
+import rawWhyImage from '../../../public/media/IMG_5760.JPG';
 
 import { getImage } from 'astro:assets';
 import { getCollection } from 'astro:content';
@@ -21,7 +21,7 @@ const description =
     <div class="hero-content">
       <h1>CCL Advisory</h1>
       <p>Bespoke legal and consulting advisory services.</p>
-      <a href="/en/contact" class="hero-cta">Get In Touch</a>
+      <a href="#contact" class="hero-cta">Get In Touch</a>
     </div>
   </section>
 
@@ -86,7 +86,6 @@ To discuss your transaction or corporate needs, please get in touch. Learn more 
     color: white;
     max-width: 750px;
     padding: 1.5rem;
-    border-radius: 12px;
   }
 
   .hero-section h1 {
@@ -188,7 +187,6 @@ To discuss your transaction or corporate needs, please get in touch. Learn more 
   .why-card {
     padding: 2rem;
     background: rgba(255, 255, 255, 0.85);
-    border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
 

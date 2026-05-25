@@ -7,15 +7,60 @@ interface Props {
 	title: string;
 	description: string;
 	image?: string;
+	lang?: string;
 }
 
-const canonicalURL = Astro.canonicalURL?.href || 
-  new URL(Astro.url.pathname, Astro.site || 'https://ccladvisors.com').href;
-
-const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
+const baseUrl = Astro.site || 'https://ccladvisors.com';
+const currentPath = Astro.url.pathname;
+const altPaths = {
+  en: currentPath.startsWith('/fi') ? currentPath.replace(/^\/fi/, '/en') : currentPath.startsWith('/en') ? currentPath : `/en${currentPath === '/' ? '/' : currentPath}`,
+  fi: currentPath.startsWith('/en') ? currentPath.replace(/^\/en/, '/fi') : currentPath.startsWith('/fi') ? currentPath : `/fi${currentPath === '/' ? '/' : currentPath}`
+};
+const canonicalURL = new URL(currentPath, baseUrl).href;
+const altEn = new URL(altPaths.en, baseUrl).href;
+const altFi = new URL(altPaths.fi, baseUrl).href;
+const { title, description, image = '/media/IMG_5760.JPG', lang = 'en' } = Astro.props;
+const ogLocale = lang === 'fi' ? 'fi_FI' : 'en_US';
+const absoluteImage = new URL(image, baseUrl).href;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      'name': 'CCL Advisory Oy',
+      'url': 'https://ccladvisors.com',
+      'logo': 'https://ccladvisors.com/media/IMG_5760.JPG',
+      'sameAs': [
+        'https://www.linkedin.com/in/mikko-harju-38a39b4/'
+      ]
+    },
+    {
+      '@type': 'LegalService',
+      'name': 'CCL Advisory',
+      'description': description,
+      'serviceType': 'Legal advisory',
+      'areaServed': {
+        '@type': 'Country',
+        'name': 'Finland'
+      },
+      'provider': {
+        '@type': 'Organization',
+        'name': 'CCL Advisory Oy'
+      }
+    },
+    {
+      '@type': 'Person',
+      'name': 'Mikko Harju',
+      'jobTitle': 'Founder & Senior Legal Advisor',
+      'worksFor': {
+        '@type': 'Organization',
+        'name': 'CCL Advisory Oy'
+      }
+    }
+  ]
+};
 ---
 
-<!-- Keep ALL your existing content exactly the same, just update the 4 URL lines above -->
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -28,6 +73,8 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
+<link rel="alternate" hrefLang="en" href={altEn} />
+<link rel="alternate" hrefLang="fi" href={altFi} />
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>
@@ -39,11 +86,17 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, canonicalURL)} />
+<meta property="og:image" content={absoluteImage} />
+<meta property="og:locale" content={ogLocale} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={canonicalURL} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, canonicalURL)} />
+<meta property="twitter:image" content={absoluteImage} />
+<meta property="twitter:image:alt" content={title} />
+
+<script type="application/ld+json">
+  {JSON.stringify(jsonLd)}
+</script>
